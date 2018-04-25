@@ -31,6 +31,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Graphicloads-Colorful-Long-Shadow-Book.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -45,14 +48,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form1.cs">
+    <Compile Include="BookThumbnail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BookThumbnail.Designer.cs">
+      <DependentUpon>BookThumbnail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MainWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="MainWindow.Designer.cs">
+      <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="BookThumbnail.resx">
+      <DependentUpon>BookThumbnail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainWindow.resx">
+      <DependentUpon>MainWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -75,5 +90,88 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Graphicloads-Colorful-Long-Shadow-Book.ico" />
+    <Content Include="Icons\Close\Close_12x_16x.png" />
+    <Content Include="Icons\Close\Close_12x_16x.svg" />
+    <Content Include="Icons\Close\Close_12x_16x_24.bmp" />
+    <Content Include="Icons\Close\Close_16x.png" />
+    <Content Include="Icons\Close\Close_16x.svg" />
+    <Content Include="Icons\Close\Close_8x_16x.png" />
+    <Content Include="Icons\Close\Close_8x_16x.svg" />
+    <Content Include="Icons\Close\Close_NoHalo_12x_16x.png" />
+    <Content Include="Icons\Close\Close_NoHalo_12x_16x.svg" />
+    <Content Include="Icons\Close\Close_NoHalo_12x_16x_24.bmp" />
+    <Content Include="Icons\Close\Close_red_16x.png" />
+    <Content Include="Icons\Close\Close_red_16x.svg" />
+    <Content Include="Icons\Close\Close_WhiteNoHalo_12x_16x.png" />
+    <Content Include="Icons\Close\Close_WhiteNoHalo_12x_16x.svg" />
+    <Content Include="Icons\Close\Close_WhiteNoHalo_12x_16x_24.bmp" />
+    <Content Include="Icons\Close\Close_WhiteNoHalo_16x.png" />
+    <Content Include="Icons\Close\Close_WhiteNoHalo_16x.svg" />
+    <Content Include="Icons\Close\Close_White_16x.png" />
+    <Content Include="Icons\Close\Close_White_16x.svg" />
+    <Content Include="Icons\Close\Close_White_16x_24.bmp" />
+    <Content Include="Icons\Exit\Exit_16x.png" />
+    <Content Include="Icons\Exit\Exit_16x.svg" />
+    <Content Include="Icons\Exit\Exit_16x_24.bmp" />
+    <Content Include="Icons\Exit\Exit_16x_32.bmp" />
+    <Content Include="Icons\Info\Info.png" />
+    <Content Include="Icons\NewCube\NewCube_16x.png" />
+    <Content Include="Icons\NewCube\NewCube_16x.svg" />
+    <Content Include="Icons\NewCube\NewCube_16x_24.bmp" />
+    <Content Include="Icons\NewCube\NewCube_16x_32.bmp" />
+    <Content Include="Icons\NewFile\NewFile_16x.png" />
+    <Content Include="Icons\NewFile\NewFile_16x.svg" />
+    <Content Include="Icons\NewFile\NewFile_16x_24.bmp" />
+    <Content Include="Icons\NewFile\NewFile_16x_32.bmp" />
+    <Content Include="Icons\Print\PrintStatusBar1_16x.png" />
+    <Content Include="Icons\Print\PrintStatusBar1_16x.svg" />
+    <Content Include="Icons\Print\PrintStatusBar2_16x.png" />
+    <Content Include="Icons\Print\PrintStatusBar2_16x.svg" />
+    <Content Include="Icons\Print\PrintStatusBar3_16x.png" />
+    <Content Include="Icons\Print\PrintStatusBar3_16x.svg" />
+    <Content Include="Icons\Print\PrintStatusBar4_16x.png" />
+    <Content Include="Icons\Print\PrintStatusBar4_16x.svg" />
+    <Content Include="Icons\Print\PrintStatusBar5_16x.png" />
+    <Content Include="Icons\Print\PrintStatusBar5_16x.svg" />
+    <Content Include="Icons\Print\PrintStatusBar6_16x.png" />
+    <Content Include="Icons\Print\PrintStatusBar6_16x.svg" />
+    <Content Include="Icons\Print\PrintStatusBar7_16x.png" />
+    <Content Include="Icons\Print\PrintStatusBar7_16x.svg" />
+    <Content Include="Icons\Print\Print_16x.png" />
+    <Content Include="Icons\Print\Print_16x.svg" />
+    <Content Include="Icons\Print\Print_16xMD.png" />
+    <Content Include="Icons\Print\Print_16xSM.png" />
+    <Content Include="Icons\Print\Print_16x_24.bmp" />
+    <Content Include="Icons\Print\Print_16x_32.bmp" />
+    <Content Include="Icons\Settings\Monaco_Settings_16x.png" />
+    <Content Include="Icons\Settings\Monaco_Settings_16x.svg" />
+    <Content Include="Icons\Settings\SettingsOutline_16x.png" />
+    <Content Include="Icons\Settings\SettingsOutline_16x.svg" />
+    <Content Include="Icons\Settings\Settings_12x_16x.png" />
+    <Content Include="Icons\Settings\Settings_12x_16x.svg" />
+    <Content Include="Icons\Settings\Settings_16x.png" />
+    <Content Include="Icons\Settings\Settings_16x.svg" />
+    <Content Include="Icons\Settings\Settings_16xMD.png" />
+    <Content Include="Icons\Settings\Settings_16xSM.png" />
+    <Content Include="Icons\Settings\Settings_16x_24.bmp" />
+    <Content Include="Icons\Settings\Settings_16x_32.bmp" />
+    <Content Include="Icons\Settings\Settings_Inverse_16x.png" />
+    <Content Include="Icons\Shortcut\Shortcut_16x.png" />
+    <Content Include="Icons\Shortcut\Shortcut_16x.svg" />
+    <Content Include="Icons\Shortcut\shortcut_16xMD.png" />
+    <Content Include="Icons\Shortcut\shortcut_16xSM.png" />
+    <Content Include="Icons\Shortcut\Shortcut_16x_24.bmp" />
+    <Content Include="Icons\Shortcut\Shortcut_16x_32.bmp" />
+    <Content Include="Icons\Shortcut\Shortcut_cyanOverlay_16x.png" />
+    <Content Include="Icons\Shortcut\Shortcut_cyanOverlay_16x.svg" />
+    <Content Include="Icons\Shortcut\Shortcut_cyanOverlay_16x_24.bmp" />
+    <Content Include="Icons\Shortcut\Shortcut_cyanOverlay_16x_32.bmp" />
+    <Content Include="Thumbnails\9780062506351.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>taskkill /f /t /im:$(TargetFileName) 2&gt;nul &amp;set errorlevel=0</PreBuildEvent>
+  </PropertyGroup>
 </Project>
