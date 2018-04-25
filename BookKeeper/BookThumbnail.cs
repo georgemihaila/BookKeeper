@@ -16,5 +16,21 @@ namespace BookKeeper
         {
             InitializeComponent();
         }
+
+        private void BookThumbnail_Click(object sender, EventArgs e)
+        {
+          
+        }
+
+        private void BookThumbnail_MouseEnter(object sender, EventArgs e)
+        {
+            this.BackColor = Color.Green;
+        }
+
+        private void BookThumbnail_MouseLeave(object sender, EventArgs e)
+        {
+            this.BackColor = Color.White;
+        }
+        
     }
 }

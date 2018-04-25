@@ -42,6 +42,7 @@
             this.Shortcuts_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.About_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.bookThumbnail1 = new BookKeeper.BookThumbnail();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.SuspendLayout();
@@ -75,7 +76,7 @@
             this.NewBook_MenuItem});
             this.NewLoan_MenuItem.Image = ((System.Drawing.Image)(resources.GetObject("NewLoan_MenuItem.Image")));
             this.NewLoan_MenuItem.Name = "NewLoan_MenuItem";
-            this.NewLoan_MenuItem.Size = new System.Drawing.Size(180, 22);
+            this.NewLoan_MenuItem.Size = new System.Drawing.Size(116, 22);
             this.NewLoan_MenuItem.Text = "New";
             this.NewLoan_MenuItem.Click += new System.EventHandler(this.NewLoan_MenuItem_Click);
             // 
@@ -83,7 +84,7 @@
             // 
             this.NewBookLoan_MenuItem.Image = ((System.Drawing.Image)(resources.GetObject("NewBookLoan_MenuItem.Image")));
             this.NewBookLoan_MenuItem.Name = "NewBookLoan_MenuItem";
-            this.NewBookLoan_MenuItem.Size = new System.Drawing.Size(180, 22);
+            this.NewBookLoan_MenuItem.Size = new System.Drawing.Size(136, 22);
             this.NewBookLoan_MenuItem.Text = "Book loan...";
             this.NewBookLoan_MenuItem.Click += new System.EventHandler(this.NewBookLoan_MenuItem_Click);
             // 
@@ -91,7 +92,7 @@
             // 
             this.NewBook_MenuItem.Image = ((System.Drawing.Image)(resources.GetObject("NewBook_MenuItem.Image")));
             this.NewBook_MenuItem.Name = "NewBook_MenuItem";
-            this.NewBook_MenuItem.Size = new System.Drawing.Size(180, 22);
+            this.NewBook_MenuItem.Size = new System.Drawing.Size(136, 22);
             this.NewBook_MenuItem.Text = "Book...";
             this.NewBook_MenuItem.Click += new System.EventHandler(this.NewBook_MenuItem_Click);
             // 
@@ -99,7 +100,7 @@
             // 
             this.Settings_MenuItem.Image = ((System.Drawing.Image)(resources.GetObject("Settings_MenuItem.Image")));
             this.Settings_MenuItem.Name = "Settings_MenuItem";
-            this.Settings_MenuItem.Size = new System.Drawing.Size(180, 22);
+            this.Settings_MenuItem.Size = new System.Drawing.Size(116, 22);
             this.Settings_MenuItem.Text = "Settings";
             this.Settings_MenuItem.Click += new System.EventHandler(this.Settings_MenuItem_Click);
             // 
@@ -107,7 +108,7 @@
             // 
             this.Exit_MenuItem.Image = ((System.Drawing.Image)(resources.GetObject("Exit_MenuItem.Image")));
             this.Exit_MenuItem.Name = "Exit_MenuItem";
-            this.Exit_MenuItem.Size = new System.Drawing.Size(180, 22);
+            this.Exit_MenuItem.Size = new System.Drawing.Size(116, 22);
             this.Exit_MenuItem.Text = "Exit";
             this.Exit_MenuItem.Click += new System.EventHandler(this.Exit_MenuItem_Click);
             // 
@@ -130,16 +131,23 @@
             // 
             this.Shortcuts_MenuItem.Image = ((System.Drawing.Image)(resources.GetObject("Shortcuts_MenuItem.Image")));
             this.Shortcuts_MenuItem.Name = "Shortcuts_MenuItem";
-            this.Shortcuts_MenuItem.Size = new System.Drawing.Size(180, 22);
+            this.Shortcuts_MenuItem.Size = new System.Drawing.Size(173, 22);
             this.Shortcuts_MenuItem.Text = "Shortcuts";
             // 
             // About_MenuItem
             // 
             this.About_MenuItem.Image = ((System.Drawing.Image)(resources.GetObject("About_MenuItem.Image")));
             this.About_MenuItem.Name = "About_MenuItem";
-            this.About_MenuItem.Size = new System.Drawing.Size(180, 22);
+            this.About_MenuItem.Size = new System.Drawing.Size(173, 22);
             this.About_MenuItem.Text = "About BookKeeper";
             this.About_MenuItem.Click += new System.EventHandler(this.About_MenuItem_Click);
+            // 
+            // bookThumbnail1
+            // 
+            this.bookThumbnail1.Location = new System.Drawing.Point(0, 27);
+            this.bookThumbnail1.Name = "bookThumbnail1";
+            this.bookThumbnail1.Size = new System.Drawing.Size(310, 155);
+            this.bookThumbnail1.TabIndex = 1;
             // 
             // MainWindow
             // 
@@ -147,6 +155,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.bookThumbnail1);
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
@@ -174,6 +183,7 @@
         private System.Windows.Forms.ToolStripMenuItem NewBookLoan_MenuItem;
         private System.Windows.Forms.ToolStripMenuItem NewBook_MenuItem;
         private System.Windows.Forms.ToolStripMenuItem Shortcuts_MenuItem;
+        private BookThumbnail bookThumbnail1;
     }
 }
 
