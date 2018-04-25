@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BookKeeper
 {
-    class Book
+    public class Book
     {
         /// <summary>
         /// Creates a new instance of the Book class.

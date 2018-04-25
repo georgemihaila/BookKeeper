@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace BookKeeper
 {
-    [AttributeUsage(AttributeTargets.Method, Inherited = true)]
+    [AttributeUsage(AttributeTargets.All, Inherited = true)]
     [Description("Specifies whether a method is not working correctly. This class can be inherited.")]
     internal class NotWorkingCorrectlyAttribute : Attribute
     {
