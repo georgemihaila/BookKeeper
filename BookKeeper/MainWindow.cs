@@ -83,6 +83,41 @@ namespace BookKeeper
         private void NewBook_MenuItem_Click(object sender, EventArgs e)
         {
 
+            ContextMenu contextMenu = new ContextMenu();
+
+            TabPage newBookPage = new TabPage()
+            {
+                Text = "New book",
+                BackColor = Color.White,
+                ContextMenu = contextMenu,
+                Tag = MainTabControl.Controls.Count
+            };
+
+            MenuItem closeThisOneMenuItem = new MenuItem() { Text = "Close this tab" };
+            closeThisOneMenuItem.Tag = MainTabControl.Controls.Count;
+            closeThisOneMenuItem.Click += (cmiSender, cmiE) =>
+            {
+                MainTabControl.SelectedIndex = (int)(cmiSender as MenuItem).Tag - 1;
+                MainTabControl.Controls.RemoveAt((int)(cmiSender as MenuItem).Tag);
+            };
+            contextMenu.MenuItems.Add(closeThisOneMenuItem);
+
+            MenuItem closeAllMenuItem = new MenuItem() { Text = "Close all tabs" };
+            closeAllMenuItem.Tag = MainTabControl.Controls.Count;
+            closeAllMenuItem.Click += (cmiSender, cmiE) =>
+            {
+                while (MainTabControl.Controls.Count > 1)
+                {
+                    MainTabControl.Controls.RemoveAt(1);
+                }
+            };
+            contextMenu.MenuItems.Add(closeAllMenuItem);
+
+            NewBook newBookControl = new NewBook();
+            newBookPage.Controls.Add(newBookControl);
+
+            MainTabControl.Controls.Add(newBookPage);
+            MainTabControl.SelectedIndex = MainTabControl.Controls.Count - 1;
         }
 
         private void Print_MenuItem_Click(object sender, EventArgs e)
@@ -143,6 +178,11 @@ namespace BookKeeper
             MainTabControl.SelectedIndex = MainTabControl.Controls.Count - 1;
         }
 
+        /// <summary>
+        /// Updates the title of the window according to the tab the user has navigated to.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MainTabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.Text = "BookKeeper - " + (sender as TabControl).SelectedTab.Text;
