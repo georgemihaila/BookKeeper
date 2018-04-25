@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using Utilities;
+using System.Reflection;
 
 namespace BookKeeper
 {
@@ -28,11 +30,15 @@ namespace BookKeeper
         #region Variables
         
         private readonly string[] AppDirectories = { "Data", "Cache" };
+        private Random random = new Random();
 
         #endregion
 
         #region Methods
 
+        /// <summary>
+        /// Creates the directories required for the application to run properly if they don't exist.
+        /// </summary>
         private void InitializeDirectories()
         {
             foreach (string folder in AppDirectories)
@@ -48,7 +54,7 @@ namespace BookKeeper
 
         private void NewLoan_MenuItem_Click(object sender, EventArgs e)
         {
-
+            
         }
 
         private void Settings_MenuItem_Click(object sender, EventArgs e)
@@ -56,14 +62,22 @@ namespace BookKeeper
 
         }
 
+        private void MainWindow_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (MessageBox.Show("Are you sure you want to exit?", "Exit", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.No)
+            {
+                e.Cancel = true;
+            }
+        }
+
         private void Exit_MenuItem_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Application.Exit();
         }
 
         private void About_MenuItem_Click(object sender, EventArgs e)
         {
-
+            (new About()).Show();
         }
 
         private void NewBook_MenuItem_Click(object sender, EventArgs e)
@@ -71,15 +85,72 @@ namespace BookKeeper
 
         }
 
-        private void NewBookLoan_MenuItem_Click(object sender, EventArgs e)
+        private void Print_MenuItem_Click(object sender, EventArgs e)
         {
 
+        }
+
+        /// <summary>
+        /// Creates a new book loan TabPage, adds it to the main tabcontrol and creates a context menu for it that allows closing and printing.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void NewBookLoan_MenuItem_Click(object sender, EventArgs e)
+        {
+            ContextMenu contextMenu = new ContextMenu();
+
+            TabPage newBookLoanPage = new TabPage()
+            {
+                Text = "New book loan",
+                BackColor = Color.White,
+                ContextMenu = contextMenu,
+                Tag = MainTabControl.Controls.Count
+            };
+
+            MenuItem closeThisOneMenuItem = new MenuItem() { Text = "Close this tab" };
+            closeThisOneMenuItem.Tag = MainTabControl.Controls.Count;
+            closeThisOneMenuItem.Click += (cmiSender, cmiE) =>
+            {
+                MainTabControl.SelectedIndex = (int)(cmiSender as MenuItem).Tag - 1;
+                MainTabControl.Controls.RemoveAt((int)(cmiSender as MenuItem).Tag);
+            };
+            contextMenu.MenuItems.Add(closeThisOneMenuItem);
+
+            MenuItem closeAllMenuItem = new MenuItem() { Text = "Close all tabs" };
+            closeAllMenuItem.Tag = MainTabControl.Controls.Count;
+            closeAllMenuItem.Click += (cmiSender, cmiE) =>
+            {
+                while (MainTabControl.Controls.Count > 1)
+                {
+                    MainTabControl.Controls.RemoveAt(1);
+                }
+            };
+            contextMenu.MenuItems.Add(closeAllMenuItem);
+            /*
+            MenuItem closeAllExceptMenuItem = new MenuItem() { Text = "Close all tabs except this one" };
+            closeAllExceptMenuItem.Tag = MainTabControl.Controls.Count;
+            closeAllExceptMenuItem.Click += (cmiSender, cmiE) =>
+            {
+                for (int i = 1; i < MainTabControl.Controls.Count; i++)
+                {
+                    if (i == (int)(cmiSender as MenuItem).Tag) continue;
+                    MainTabControl.Controls.RemoveAt(i);
+                }
+            };
+            contextMenu.MenuItems.Add(closeAllExceptMenuItem);*/
+
+            MainTabControl.Controls.Add(newBookLoanPage);
+            MainTabControl.SelectedIndex = MainTabControl.Controls.Count - 1;
+        }
+
+        private void MainTabControl_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.Text = "BookKeeper - " + (sender as TabControl).SelectedTab.Text;
         }
 
         #endregion
 
         #endregion
-
 
     }
 }
