@@ -33,6 +33,7 @@
             this.Title_Label = new System.Windows.Forms.Label();
             this.Author_Label = new System.Windows.Forms.Label();
             this.Description_Label = new System.Windows.Forms.Label();
+            this.QuantityAvailable_Label = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.Thumbnail_PictureBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -74,15 +75,25 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Description_Label.Location = new System.Drawing.Point(109, 43);
             this.Description_Label.Name = "Description_Label";
-            this.Description_Label.Size = new System.Drawing.Size(138, 104);
+            this.Description_Label.Size = new System.Drawing.Size(138, 77);
             this.Description_Label.TabIndex = 3;
             this.Description_Label.Text = resources.GetString("Description_Label.Text");
+            // 
+            // QuantityAvailable_Label
+            // 
+            this.QuantityAvailable_Label.AutoSize = true;
+            this.QuantityAvailable_Label.Location = new System.Drawing.Point(109, 120);
+            this.QuantityAvailable_Label.Name = "QuantityAvailable_Label";
+            this.QuantityAvailable_Label.Size = new System.Drawing.Size(62, 13);
+            this.QuantityAvailable_Label.TabIndex = 4;
+            this.QuantityAvailable_Label.Text = "Available: 1";
             // 
             // BookThumbnail
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
+            this.Controls.Add(this.QuantityAvailable_Label);
             this.Controls.Add(this.Description_Label);
             this.Controls.Add(this.Author_Label);
             this.Controls.Add(this.Title_Label);
@@ -104,5 +115,6 @@
         private System.Windows.Forms.Label Title_Label;
         private System.Windows.Forms.Label Author_Label;
         private System.Windows.Forms.Label Description_Label;
+        private System.Windows.Forms.Label QuantityAvailable_Label;
     }
 }

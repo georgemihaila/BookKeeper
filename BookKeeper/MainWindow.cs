@@ -22,6 +22,7 @@ namespace BookKeeper
         {
             InitializeComponent();
             InitializeDirectories();
+            InitializeView();
         }
 
 
@@ -31,6 +32,9 @@ namespace BookKeeper
         
         private readonly string[] AppDirectories = { "Data", "Cache" };
         private Random random = new Random();
+        private int ThumbnailWidth { get; set; } = 250;
+        private int ThumbnailHeight { get; set; } = 150;
+        private int ThumbnailSpacing { get; set; } = 20;
 
         #endregion
 
@@ -46,11 +50,64 @@ namespace BookKeeper
                     Directory.CreateDirectory(folder);
         }
 
+        private async void InitializeView()
+        {
+            if (Database.Exists)
+            {
+                StatusLabel.Text = "Ready";
+                List<Book> books = await Database.GetAllBooksAsync(Database.SortParameter.Author, Database.SortDirection.Asc);
+                int xIndex = 0;
+                int yIndex = 0;
+                int perRow = MainPanel.Width / (ThumbnailSpacing + ThumbnailWidth);
+                foreach (Book book in books)
+                {
+                    BookThumbnail thumbnail = new BookThumbnail(book);
+                    thumbnail.Height = 150;
+                    thumbnail.Width = 250;
+                    thumbnail.Top = yIndex * (ThumbnailHeight + ThumbnailSpacing);
+                    thumbnail.Left = xIndex * (ThumbnailWidth + ThumbnailSpacing);
+                    MainPanel.Controls.Add(thumbnail);
+                    if (++xIndex >= perRow)
+                    {
+                        xIndex = 0;
+                        yIndex++;
+                    }
+                }
+            }
+            else
+            {
+                StatusLabel.Text = "Database file does not exist!";
+            }
+        }
+
+        private void ResizeAll()
+        {
+            //MainPanel
+            int xIndex = 0;
+            int yIndex = 0;
+            int perRow = MainPanel.Width / (ThumbnailSpacing + ThumbnailWidth);
+            foreach (BookThumbnail thumbnail in MainPanel.Controls)
+            {
+                thumbnail.Top = yIndex * (ThumbnailHeight + ThumbnailSpacing);
+                thumbnail.Left = xIndex * (ThumbnailWidth + ThumbnailSpacing);
+                if (++xIndex >= perRow)
+                {
+                    xIndex = 0;
+                    yIndex++;
+                }
+            }
+        }
+
         #endregion
 
         #region Input handling
 
         #region Menu
+
+        private void MainWindow_ResizeEnd(object sender, EventArgs e)
+        {
+            ResizeAll();
+        }
 
         private void NewLoan_MenuItem_Click(object sender, EventArgs e)
         {
@@ -186,6 +243,11 @@ namespace BookKeeper
         private void MainTabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.Text = "BookKeeper - " + (sender as TabControl).SelectedTab.Text;
+        }
+
+        private void Search_TextBox_TextChanged(object sender, EventArgs e)
+        {
+
         }
 
         #endregion

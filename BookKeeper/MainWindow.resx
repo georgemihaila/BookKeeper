@@ -147,6 +147,14 @@
         RVQzVXWIQUTRF0YvQnWBFoSrAAAAAElFTkSuQmCC
 </value>
   </data>
+  <data name="Print_MenuItem.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        xAAADsQBlSsOGwAAAGtJREFUOE+1z1EKgDAMA9Cdrfe/i/rT38qgYVVjXRUHD0fNMm1m9gkdVtBhxdj4
+        UlXLeCwvEBGqVLAu28FjQX8JWQHQgh6akRbgNjyZf78giv8f3RbA+QDEzKUAK4YYj41z2LxFhxV0OM/a
+        DpQ5u2fCrug4AAAAAElFTkSuQmCC
+</value>
+  </data>
   <data name="Settings_MenuItem.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
@@ -844,14 +852,6 @@
   <metadata name="bindingSource1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>132, 17</value>
   </metadata>
-  <data name="Print_MenuItem.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAABrSURBVDhPtc9RCoAwDAPQna33v4v609/KoGFVY10VBw9H
-        zTJtZvYJHVbQYcXY+FJVy3gsLxARqlSwLtvBY0F/CVkB0IIempEW4DY8mX+/IIr/H90WwPkAxMylACuG
-        GI+Nc9i8RYcVdDjP2g6UObtnwq7oOAAAAABJRU5ErkJggg==
-</value>
-  </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         AAABAAkAAAAAAAEAIAAbGwAAlgAAAICAAAABACAAKAgBALEbAABgYAAAAQAgAKiUAADZIwEASEgAAAEA
