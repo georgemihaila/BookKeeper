@@ -35,6 +35,9 @@ namespace BookKeeper
         private int ThumbnailWidth { get; set; } = 250;
         private int ThumbnailHeight { get; set; } = 150;
         private int ThumbnailSpacing { get; set; } = 20;
+        private int previousPerRow = 0;
+        private Database.SortParameter _SortParameter = Database.SortParameter.Title;
+        private List<Book> Books { get; set; } = new List<Book>();
 
         #endregion
 
@@ -55,11 +58,13 @@ namespace BookKeeper
             if (Database.Exists)
             {
                 StatusLabel.Text = "Ready";
-                List<Book> books = await Database.GetAllBooksAsync(Database.SortParameter.Author, Database.SortDirection.Asc);
+                Books = await Database.GetAllBooksAsync(_SortParameter, Database.SortDirection.Asc);
                 int xIndex = 0;
                 int yIndex = 0;
-                int perRow = MainPanel.Width / (ThumbnailSpacing + ThumbnailWidth);
-                foreach (Book book in books)
+                int perRow = previousPerRow = MainPanel.Width / (ThumbnailSpacing + ThumbnailWidth);
+                MainPanel.Controls.Clear();
+                int currentIndex = 0;
+                foreach (Book book in Books)
                 {
                     BookThumbnail thumbnail = new BookThumbnail(book);
                     thumbnail.Height = 150;
@@ -72,7 +77,10 @@ namespace BookKeeper
                         xIndex = 0;
                         yIndex++;
                     }
+                    StatusLabel.Text = string.Format("Loading \"{2}\" ({0}/{1})...", ++currentIndex, Books.Count, book.Title);
+                    await Task.Delay(1);
                 }
+                StatusLabel.Text = Books.Count + " items";
             }
             else
             {
@@ -86,6 +94,9 @@ namespace BookKeeper
             int xIndex = 0;
             int yIndex = 0;
             int perRow = MainPanel.Width / (ThumbnailSpacing + ThumbnailWidth);
+            if (previousPerRow == perRow)
+                return;
+            previousPerRow = perRow;
             foreach (BookThumbnail thumbnail in MainPanel.Controls)
             {
                 thumbnail.Top = yIndex * (ThumbnailHeight + ThumbnailSpacing);
@@ -104,7 +115,7 @@ namespace BookKeeper
 
         #region Menu
 
-        private void MainWindow_ResizeEnd(object sender, EventArgs e)
+        private void MainWindow_Resize(object sender, EventArgs e)
         {
             ResizeAll();
         }
@@ -250,9 +261,43 @@ namespace BookKeeper
 
         }
 
-        #endregion
+        private void Refresh_Button_Click(object sender, EventArgs e)
+        {
+            InitializeView();
+        }
+
+        private void SortByTitle_RadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            _SortParameter = Database.SortParameter.Title;
+            InitializeView();
+        }
+
+        private void SortByAuthor_RadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            _SortParameter = Database.SortParameter.Author;
+            InitializeView();
+        }
+
+        private void SortByCategory_RadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            _SortParameter = Database.SortParameter.Category;
+            InitializeView();
+        }
+
+        private void SortByQtyAvailable_RadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            _SortParameter = Database.SortParameter.QuantityAvailable;
+            InitializeView();
+        }
+
+        private void SortByID_RadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            _SortParameter = Database.SortParameter.ID;
+            InitializeView();
+        }
 
         #endregion
 
+        #endregion
     }
 }

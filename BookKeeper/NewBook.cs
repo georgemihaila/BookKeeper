@@ -51,18 +51,33 @@ namespace BookKeeper
 
         }
 
-        private void SaveButton_Click(object sender, EventArgs e)
+        async private void SaveButton_Click(object sender, EventArgs e)
         {
-            CurrentBook = new Book()
+            try
             {
-                Title = Title_TextBox.Text,
-                Author = Author_TextBox.Text,
-                Category = Category_TextBox.Text,
-                Description = Description_TextBox.Text,
-                ID = (uint)random.Next(1000, 10000),
-                Image = new Bitmap(Image_PictureBox.Image),
-                QuantityAvailable = (uint)Quantity_NumericUpDown.Value
-            };
+                SaveButton.Enabled = false;
+                CurrentBook = new Book()
+                {
+                    Title = Title_TextBox.Text,
+                    Author = Author_TextBox.Text,
+                    Category = Category_TextBox.Text,
+                    Description = Description_TextBox.Text.Replace("\"", string.Empty),
+                    ID = (uint)random.Next(1000000, 10000000),
+                    Image = new Bitmap(Image_PictureBox.Image),
+                    QuantityAvailable = (uint)Quantity_NumericUpDown.Value
+                };
+                await Database.AddBookAsync(CurrentBook);
+                StatusLabel.Text = "Saved.";
+            }
+            catch (Exception ex)
+            {
+                StatusLabel.Text = "Database error";
+                MessageBox.Show(ex.ToString());
+            }
+            finally
+            {
+                SaveButton.Enabled = true;
+            }
         }
 
         private void Quantity_NumericUpDown_ValueChanged(object sender, EventArgs e)

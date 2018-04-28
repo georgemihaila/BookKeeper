@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Utilities;
 
 namespace BookKeeper
 {
@@ -69,10 +70,23 @@ namespace BookKeeper
         /// </summary>
         public string Author { get; set; }
 
+        private string _Description = string.Empty;
         /// <summary>
         /// Gets or sets the description of the book.
         /// </summary>
-        public string Description { get; set; }
+        public string Description
+        {
+            get
+            {
+                return _Description.Base64Decode();
+            }
+            set
+            {
+                _Description = value.Base64Encode();
+            }
+        }
+
+        public string Description_Base64 { get { return _Description; } set { _Description = value; } }
 
         /// <summary>
         /// Gets or sets the category of the book.

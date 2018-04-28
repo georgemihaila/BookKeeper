@@ -51,6 +51,13 @@
             this.label1 = new System.Windows.Forms.Label();
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.StatusLabel = new System.Windows.Forms.Label();
+            this.Refresh_Button = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.SortByTitle_RadioButton = new System.Windows.Forms.RadioButton();
+            this.SortByAuthor_RadioButton = new System.Windows.Forms.RadioButton();
+            this.SortByCategory_RadioButton = new System.Windows.Forms.RadioButton();
+            this.SortByQtyAvailable_RadioButton = new System.Windows.Forms.RadioButton();
+            this.SortByID_RadioButton = new System.Windows.Forms.RadioButton();
             this.menuStrip1.SuspendLayout();
             this.MainTabControl.SuspendLayout();
             this.Dashboard_TabPage.SuspendLayout();
@@ -186,6 +193,13 @@
             // 
             // Dashboard_TabPage
             // 
+            this.Dashboard_TabPage.Controls.Add(this.SortByID_RadioButton);
+            this.Dashboard_TabPage.Controls.Add(this.SortByQtyAvailable_RadioButton);
+            this.Dashboard_TabPage.Controls.Add(this.SortByCategory_RadioButton);
+            this.Dashboard_TabPage.Controls.Add(this.SortByAuthor_RadioButton);
+            this.Dashboard_TabPage.Controls.Add(this.SortByTitle_RadioButton);
+            this.Dashboard_TabPage.Controls.Add(this.label3);
+            this.Dashboard_TabPage.Controls.Add(this.Refresh_Button);
             this.Dashboard_TabPage.Controls.Add(this.MainPanel);
             this.Dashboard_TabPage.Controls.Add(this.label2);
             this.Dashboard_TabPage.Controls.Add(this.Search_TextBox);
@@ -246,6 +260,84 @@
             this.StatusLabel.TabIndex = 0;
             this.StatusLabel.Text = "Ready";
             // 
+            // Refresh_Button
+            // 
+            this.Refresh_Button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Refresh_Button.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Refresh_Button.Image = ((System.Drawing.Image)(resources.GetObject("Refresh_Button.Image")));
+            this.Refresh_Button.Location = new System.Drawing.Point(732, 42);
+            this.Refresh_Button.Name = "Refresh_Button";
+            this.Refresh_Button.Size = new System.Drawing.Size(32, 23);
+            this.Refresh_Button.TabIndex = 4;
+            this.Refresh_Button.UseVisualStyleBackColor = true;
+            this.Refresh_Button.Click += new System.EventHandler(this.Refresh_Button_Click);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(246, 32);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(43, 13);
+            this.label3.TabIndex = 5;
+            this.label3.Text = "Sort by:";
+            // 
+            // SortByTitle_RadioButton
+            // 
+            this.SortByTitle_RadioButton.AutoSize = true;
+            this.SortByTitle_RadioButton.Checked = true;
+            this.SortByTitle_RadioButton.Location = new System.Drawing.Point(295, 30);
+            this.SortByTitle_RadioButton.Name = "SortByTitle_RadioButton";
+            this.SortByTitle_RadioButton.Size = new System.Drawing.Size(45, 17);
+            this.SortByTitle_RadioButton.TabIndex = 6;
+            this.SortByTitle_RadioButton.TabStop = true;
+            this.SortByTitle_RadioButton.Text = "Title";
+            this.SortByTitle_RadioButton.UseVisualStyleBackColor = true;
+            this.SortByTitle_RadioButton.CheckedChanged += new System.EventHandler(this.SortByTitle_RadioButton_CheckedChanged);
+            // 
+            // SortByAuthor_RadioButton
+            // 
+            this.SortByAuthor_RadioButton.AutoSize = true;
+            this.SortByAuthor_RadioButton.Location = new System.Drawing.Point(346, 30);
+            this.SortByAuthor_RadioButton.Name = "SortByAuthor_RadioButton";
+            this.SortByAuthor_RadioButton.Size = new System.Drawing.Size(56, 17);
+            this.SortByAuthor_RadioButton.TabIndex = 7;
+            this.SortByAuthor_RadioButton.Text = "Author";
+            this.SortByAuthor_RadioButton.UseVisualStyleBackColor = true;
+            this.SortByAuthor_RadioButton.CheckedChanged += new System.EventHandler(this.SortByAuthor_RadioButton_CheckedChanged);
+            // 
+            // SortByCategory_RadioButton
+            // 
+            this.SortByCategory_RadioButton.AutoSize = true;
+            this.SortByCategory_RadioButton.Location = new System.Drawing.Point(408, 30);
+            this.SortByCategory_RadioButton.Name = "SortByCategory_RadioButton";
+            this.SortByCategory_RadioButton.Size = new System.Drawing.Size(67, 17);
+            this.SortByCategory_RadioButton.TabIndex = 8;
+            this.SortByCategory_RadioButton.Text = "Category";
+            this.SortByCategory_RadioButton.UseVisualStyleBackColor = true;
+            this.SortByCategory_RadioButton.CheckedChanged += new System.EventHandler(this.SortByCategory_RadioButton_CheckedChanged);
+            // 
+            // SortByQtyAvailable_RadioButton
+            // 
+            this.SortByQtyAvailable_RadioButton.AutoSize = true;
+            this.SortByQtyAvailable_RadioButton.Location = new System.Drawing.Point(481, 30);
+            this.SortByQtyAvailable_RadioButton.Name = "SortByQtyAvailable_RadioButton";
+            this.SortByQtyAvailable_RadioButton.Size = new System.Drawing.Size(89, 17);
+            this.SortByQtyAvailable_RadioButton.TabIndex = 9;
+            this.SortByQtyAvailable_RadioButton.Text = "Qty. available";
+            this.SortByQtyAvailable_RadioButton.UseVisualStyleBackColor = true;
+            this.SortByQtyAvailable_RadioButton.CheckedChanged += new System.EventHandler(this.SortByQtyAvailable_RadioButton_CheckedChanged);
+            // 
+            // SortByID_RadioButton
+            // 
+            this.SortByID_RadioButton.AutoSize = true;
+            this.SortByID_RadioButton.Location = new System.Drawing.Point(576, 29);
+            this.SortByID_RadioButton.Name = "SortByID_RadioButton";
+            this.SortByID_RadioButton.Size = new System.Drawing.Size(36, 17);
+            this.SortByID_RadioButton.TabIndex = 10;
+            this.SortByID_RadioButton.Text = "ID";
+            this.SortByID_RadioButton.UseVisualStyleBackColor = true;
+            this.SortByID_RadioButton.CheckedChanged += new System.EventHandler(this.SortByID_RadioButton_CheckedChanged);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -261,7 +353,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "BookKeeper - Dashboard";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainWindow_FormClosing);
-            this.ResizeEnd += new System.EventHandler(this.MainWindow_ResizeEnd);
+            this.Resize += new System.EventHandler(this.MainWindow_Resize);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.MainTabControl.ResumeLayout(false);
@@ -296,6 +388,13 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel MainPanel;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button Refresh_Button;
+        private System.Windows.Forms.RadioButton SortByID_RadioButton;
+        private System.Windows.Forms.RadioButton SortByQtyAvailable_RadioButton;
+        private System.Windows.Forms.RadioButton SortByCategory_RadioButton;
+        private System.Windows.Forms.RadioButton SortByAuthor_RadioButton;
+        private System.Windows.Forms.RadioButton SortByTitle_RadioButton;
+        private System.Windows.Forms.Label label3;
     }
 }
 

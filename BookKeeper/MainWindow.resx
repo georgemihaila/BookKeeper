@@ -849,6 +849,17 @@
         Fsv93K9E8CHwiXGFfv/0T/8/YnXkJ8xESHUAAAAASUVORK5CYII=
 </value>
   </data>
+  <data name="Refresh_Button.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAEwSURBVDhPnVIhjoRAEOQp94R7wgZPshaHwHMahcJe8CQr
+        kQg8aBQGv3gEDtvXNeme7ezO3iXXSYViuqqG6SEiIgdbunae50X5O02wiYKZQYwlpPFrtqkc0ICmaRBy
+        MD6dSMr7rEnB4kpMFMcxFUVB+74jKLNm4EG4sAvj3nUdpWnqzIo8z2nbNoRUwQCAm0td196EnZXbo1iP
+        NWfzPDtxkiS0risM7n0YBvCFgbncoA0F9GVZWsPE0CDwO44gvT4UMOknw8i4yrOS+bgeNMynXwNkWBnj
+        KuYL1v4K+Mb0IcJR+B0D+xIcejxooH0JAHDXen3YCecF9MvQk//hIxjAjQxDw53DYIE1Gai/AeBBpFiA
+        4R3jOFLbtg7gWEPPmp3Pk6eSIPzSgDdq+Xcl/wNFP69FoPwIdrh6AAAAAElFTkSuQmCC
+</value>
+  </data>
   <metadata name="bindingSource1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>132, 17</value>
   </metadata>

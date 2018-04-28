@@ -47,6 +47,7 @@
             this.label7 = new System.Windows.Forms.Label();
             this.Quantity_NumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.GetBookDepositoryDetails_Button = new System.Windows.Forms.Button();
+            this.StatusLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.Image_PictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Quantity_NumericUpDown)).BeginInit();
             this.SuspendLayout();
@@ -241,10 +242,19 @@
             this.GetBookDepositoryDetails_Button.UseVisualStyleBackColor = true;
             this.GetBookDepositoryDetails_Button.Click += new System.EventHandler(this.GetBookDepositoryDetails_Button_Click);
             // 
+            // StatusLabel
+            // 
+            this.StatusLabel.AutoSize = true;
+            this.StatusLabel.Location = new System.Drawing.Point(407, 269);
+            this.StatusLabel.Name = "StatusLabel";
+            this.StatusLabel.Size = new System.Drawing.Size(0, 13);
+            this.StatusLabel.TabIndex = 20;
+            // 
             // NewBook
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.StatusLabel);
             this.Controls.Add(this.GetBookDepositoryDetails_Button);
             this.Controls.Add(this.Quantity_NumericUpDown);
             this.Controls.Add(this.label7);
@@ -293,5 +303,6 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.NumericUpDown Quantity_NumericUpDown;
         private System.Windows.Forms.Button GetBookDepositoryDetails_Button;
+        private System.Windows.Forms.Label StatusLabel;
     }
 }

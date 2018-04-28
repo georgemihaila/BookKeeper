@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
+using System.Drawing;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
@@ -26,15 +27,20 @@ namespace Utilities
 
         private static string ConnectionString { get { return string.Format("DataSource={0};Version=3;", Location); } }
 
-        public static async Task AddBook(Book book)
+        public static async Task AddBookAsync(Book book)
         {
             SQLiteConnection connection = new SQLiteConnection(ConnectionString);
             await connection.OpenAsync();
-            SQLiteCommand command = new SQLiteCommand(string.Format("select Username, Name, RA, Country, Site, PhoneNumber, Email from Users where Username=\"{0}\"", book))
+            SQLiteCommand command = new SQLiteCommand()
             {
                 Connection = connection
             };
-            SQLiteDataReader reader = command.ExecuteReader(System.Data.CommandBehavior.CloseConnection);
+            command.CommandText = string.Format("insert into Books values (\"{0}\", \"{1}\", \"{2}\", \"{3}\", {4}, @img, {5});", book.Title, book.Author, book.Description, book.Category, book.QuantityAvailable, book.ID);
+            command.Prepare();
+            byte[] imageBytes = book.Image.ToByteArray();
+            command.Parameters.Add("@img", DbType.Binary, imageBytes.Length);
+            command.Parameters["@img"].Value = imageBytes;
+            await command.ExecuteNonQueryAsync();
         }
 
         public enum SortParameter { Title, Author, Description, Category, QuantityAvailable, ID };
@@ -85,7 +91,6 @@ namespace Utilities
             };
             SQLiteDataReader reader = command.ExecuteReader(System.Data.CommandBehavior.CloseConnection);
             List<Book> Books = new List<Book>();
-            int i = 0;
             while (await reader.ReadAsync())
             {
                 Book book = new Book()
@@ -152,6 +157,39 @@ namespace Utilities
             text = stripFormattingRegex.Replace(text, string.Empty);
 
             return text;
+        }
+    }
+
+    /// <summary>
+    /// A class for managing images.
+    /// </summary>
+    public static class ImageHelper
+    {
+        public static byte[] ToByteArray(this Bitmap bitmap)
+        {
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                bitmap.Save(memoryStream, System.Drawing.Imaging.ImageFormat.Jpeg);
+                return memoryStream.ToArray();
+            }
+        }
+    }
+
+    /// <summary>
+    /// A class for managing strings.
+    /// </summary>
+    public static class StringHelpers
+    {
+        public static string Base64Encode(this string plainText)
+        {
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
+            return System.Convert.ToBase64String(plainTextBytes);
+        }
+
+        public static string Base64Decode(this string base64EncodedData)
+        {
+            var base64EncodedBytes = System.Convert.FromBase64String(base64EncodedData);
+            return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
         }
     }
 }
