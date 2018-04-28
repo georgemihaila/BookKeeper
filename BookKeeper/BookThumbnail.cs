@@ -33,6 +33,7 @@ namespace BookKeeper
             Author = book.Author;
             Description = book.Description;
             QuantityAvailable = book.QuantityAvailable;
+            Thumbnail = book.Image;
         }
 
         /// <summary>
@@ -102,7 +103,7 @@ namespace BookKeeper
         /// <summary>
         /// Gets or sets the thumbnail of the control.
         /// </summary>
-        public Bitmap Thumbnai
+        public Bitmap Thumbnail
         {
             get
             {
@@ -117,7 +118,7 @@ namespace BookKeeper
 
         private void BookThumbnail_Click(object sender, EventArgs e)
         {
-            Thumbnail_PictureBox.Image = new Bitmap(0,0);
+
         }
 
         private void BookThumbnail_MouseEnter(object sender, EventArgs e)

@@ -85,9 +85,10 @@ namespace Utilities
             };
             SQLiteDataReader reader = command.ExecuteReader(System.Data.CommandBehavior.CloseConnection);
             List<Book> Books = new List<Book>();
+            int i = 0;
             while (await reader.ReadAsync())
             {
-                Books.Add(new Book()
+                Book book = new Book()
                 {
                     Title = reader[0].ToString().Replace("\n", string.Empty),
                     Author = reader[1].ToString(),
@@ -95,7 +96,11 @@ namespace Utilities
                     Category = reader[3].ToString(),
                     QuantityAvailable = Convert.ToUInt32(reader[4].ToString()),
                     ID = Convert.ToUInt32(reader[6].ToString())
-                });
+                };
+                if (!File.Exists("Cache/" + book.ID + ".jpg"))
+                    File.WriteAllBytes("Cache/" + book.ID + ".jpg", (byte[])reader[5]);
+                book.Image = new System.Drawing.Bitmap("Cache/" + book.ID + ".jpg");
+                Books.Add(book);
             }
             return Books;
         }
