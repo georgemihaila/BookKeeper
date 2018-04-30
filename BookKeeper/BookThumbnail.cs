@@ -121,15 +121,36 @@ namespace BookKeeper
 
         }
 
-        private void BookThumbnail_MouseEnter(object sender, EventArgs e)
+        private void OnMouseOver()
         {
             this.BackColor = (QuantityAvailable > 0) ? Color.Green : Color.Red;
+            QuantityAvailable_Label.ForeColor = (QuantityAvailable > 0) ? Color.Black : Color.White;
+        }
+
+        private void OnMouseLeave()
+        {
+            this.BackColor = Color.White;
+            QuantityAvailable_Label.ForeColor = (QuantityAvailable > 0) ? Color.Black : Color.Red;
+        }
+
+        private void BookThumbnail_MouseEnter(object sender, EventArgs e)
+        {
+            OnMouseOver();
         }
 
         private void BookThumbnail_MouseLeave(object sender, EventArgs e)
         {
-            this.BackColor = Color.White;
+            OnMouseLeave();
         }
-        
+
+        private void Element_MouseLeave(object sender, EventArgs e)
+        {
+            OnMouseLeave();
+        }
+
+        private void Element_MouseEnter(object sender, EventArgs e)
+        {
+            OnMouseOver();
+        }
     }
 }

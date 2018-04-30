@@ -38,6 +38,7 @@ namespace BookKeeper
         private int previousPerRow = 0;
         private Database.SortParameter _SortParameter = Database.SortParameter.Title;
         private List<Book> Books { get; set; } = new List<Book>();
+        private List<BookThumbnail> BookThumbnails = new List<BookThumbnail>();
 
         #endregion
 
@@ -72,6 +73,7 @@ namespace BookKeeper
                     thumbnail.Top = yIndex * (ThumbnailHeight + ThumbnailSpacing);
                     thumbnail.Left = xIndex * (ThumbnailWidth + ThumbnailSpacing);
                     MainPanel.Controls.Add(thumbnail);
+                    BookThumbnails.Add(thumbnail);
                     if (++xIndex >= perRow)
                     {
                         xIndex = 0;
@@ -174,9 +176,9 @@ namespace BookKeeper
             closeAllMenuItem.Tag = MainTabControl.Controls.Count;
             closeAllMenuItem.Click += (cmiSender, cmiE) =>
             {
-                while (MainTabControl.Controls.Count > 1)
+                while (MainTabControl.Controls.Count > 2)
                 {
-                    MainTabControl.Controls.RemoveAt(1);
+                    MainTabControl.Controls.RemoveAt(2);
                 }
             };
             contextMenu.MenuItems.Add(closeAllMenuItem);
@@ -223,9 +225,9 @@ namespace BookKeeper
             closeAllMenuItem.Tag = MainTabControl.Controls.Count;
             closeAllMenuItem.Click += (cmiSender, cmiE) =>
             {
-                while (MainTabControl.Controls.Count > 1)
+                while (MainTabControl.Controls.Count > 2)
                 {
-                    MainTabControl.Controls.RemoveAt(1);
+                    MainTabControl.Controls.RemoveAt(2);
                 }
             };
             contextMenu.MenuItems.Add(closeAllMenuItem);

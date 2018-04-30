@@ -48,6 +48,8 @@
             this.Thumbnail_PictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.Thumbnail_PictureBox.TabIndex = 0;
             this.Thumbnail_PictureBox.TabStop = false;
+            this.Thumbnail_PictureBox.MouseEnter += new System.EventHandler(this.Element_MouseEnter);
+            this.Thumbnail_PictureBox.MouseLeave += new System.EventHandler(this.Element_MouseLeave);
             // 
             // Title_Label
             // 
@@ -58,6 +60,8 @@
             this.Title_Label.Size = new System.Drawing.Size(141, 13);
             this.Title_Label.TabIndex = 1;
             this.Title_Label.Text = "The invisible landscape";
+            this.Title_Label.MouseEnter += new System.EventHandler(this.Element_MouseEnter);
+            this.Title_Label.MouseLeave += new System.EventHandler(this.Element_MouseLeave);
             // 
             // Author_Label
             // 
@@ -67,6 +71,8 @@
             this.Author_Label.Size = new System.Drawing.Size(96, 13);
             this.Author_Label.TabIndex = 2;
             this.Author_Label.Text = "Terence McKenna";
+            this.Author_Label.MouseEnter += new System.EventHandler(this.Element_MouseEnter);
+            this.Author_Label.MouseHover += new System.EventHandler(this.Element_MouseLeave);
             // 
             // Description_Label
             // 
@@ -78,6 +84,8 @@
             this.Description_Label.Size = new System.Drawing.Size(138, 77);
             this.Description_Label.TabIndex = 3;
             this.Description_Label.Text = resources.GetString("Description_Label.Text");
+            this.Description_Label.MouseEnter += new System.EventHandler(this.Element_MouseEnter);
+            this.Description_Label.MouseLeave += new System.EventHandler(this.Element_MouseLeave);
             // 
             // QuantityAvailable_Label
             // 
@@ -87,6 +95,8 @@
             this.QuantityAvailable_Label.Size = new System.Drawing.Size(62, 13);
             this.QuantityAvailable_Label.TabIndex = 4;
             this.QuantityAvailable_Label.Text = "Available: 1";
+            this.QuantityAvailable_Label.MouseEnter += new System.EventHandler(this.Element_MouseEnter);
+            this.QuantityAvailable_Label.MouseLeave += new System.EventHandler(this.Element_MouseLeave);
             // 
             // BookThumbnail
             // 
