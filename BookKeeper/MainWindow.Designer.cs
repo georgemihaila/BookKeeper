@@ -56,9 +56,9 @@
             this.label2 = new System.Windows.Forms.Label();
             this.Search_TextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.Loans_TabPage = new System.Windows.Forms.TabPage();
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.StatusLabel = new System.Windows.Forms.Label();
-            this.Loans_TabPage = new System.Windows.Forms.TabPage();
             this.menuStrip1.SuspendLayout();
             this.MainTabControl.SuspendLayout();
             this.Dashboard_TabPage.SuspendLayout();
@@ -72,7 +72,7 @@
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(778, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(854, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -189,7 +189,7 @@
             this.MainTabControl.Location = new System.Drawing.Point(0, 27);
             this.MainTabControl.Name = "MainTabControl";
             this.MainTabControl.SelectedIndex = 0;
-            this.MainTabControl.Size = new System.Drawing.Size(778, 411);
+            this.MainTabControl.Size = new System.Drawing.Size(854, 422);
             this.MainTabControl.TabIndex = 1;
             this.MainTabControl.SelectedIndexChanged += new System.EventHandler(this.MainTabControl_SelectedIndexChanged);
             // 
@@ -209,7 +209,7 @@
             this.Dashboard_TabPage.Location = new System.Drawing.Point(4, 22);
             this.Dashboard_TabPage.Name = "Dashboard_TabPage";
             this.Dashboard_TabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.Dashboard_TabPage.Size = new System.Drawing.Size(770, 385);
+            this.Dashboard_TabPage.Size = new System.Drawing.Size(846, 396);
             this.Dashboard_TabPage.TabIndex = 0;
             this.Dashboard_TabPage.Text = "Dashboard";
             this.Dashboard_TabPage.UseVisualStyleBackColor = true;
@@ -223,7 +223,6 @@
             this.SortByID_RadioButton.TabIndex = 10;
             this.SortByID_RadioButton.Text = "ID";
             this.SortByID_RadioButton.UseVisualStyleBackColor = true;
-            this.SortByID_RadioButton.CheckedChanged += new System.EventHandler(this.SortByID_RadioButton_CheckedChanged);
             // 
             // SortByQtyAvailable_RadioButton
             // 
@@ -234,7 +233,6 @@
             this.SortByQtyAvailable_RadioButton.TabIndex = 9;
             this.SortByQtyAvailable_RadioButton.Text = "Qty. available";
             this.SortByQtyAvailable_RadioButton.UseVisualStyleBackColor = true;
-            this.SortByQtyAvailable_RadioButton.CheckedChanged += new System.EventHandler(this.SortByQtyAvailable_RadioButton_CheckedChanged);
             // 
             // SortByCategory_RadioButton
             // 
@@ -245,7 +243,6 @@
             this.SortByCategory_RadioButton.TabIndex = 8;
             this.SortByCategory_RadioButton.Text = "Category";
             this.SortByCategory_RadioButton.UseVisualStyleBackColor = true;
-            this.SortByCategory_RadioButton.CheckedChanged += new System.EventHandler(this.SortByCategory_RadioButton_CheckedChanged);
             // 
             // SortByAuthor_RadioButton
             // 
@@ -256,7 +253,6 @@
             this.SortByAuthor_RadioButton.TabIndex = 7;
             this.SortByAuthor_RadioButton.Text = "Author";
             this.SortByAuthor_RadioButton.UseVisualStyleBackColor = true;
-            this.SortByAuthor_RadioButton.CheckedChanged += new System.EventHandler(this.SortByAuthor_RadioButton_CheckedChanged);
             // 
             // SortByTitle_RadioButton
             // 
@@ -269,7 +265,6 @@
             this.SortByTitle_RadioButton.TabStop = true;
             this.SortByTitle_RadioButton.Text = "Title";
             this.SortByTitle_RadioButton.UseVisualStyleBackColor = true;
-            this.SortByTitle_RadioButton.CheckedChanged += new System.EventHandler(this.SortByTitle_RadioButton_CheckedChanged);
             // 
             // label3
             // 
@@ -285,7 +280,7 @@
             this.Refresh_Button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.Refresh_Button.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Refresh_Button.Image = ((System.Drawing.Image)(resources.GetObject("Refresh_Button.Image")));
-            this.Refresh_Button.Location = new System.Drawing.Point(732, 42);
+            this.Refresh_Button.Location = new System.Drawing.Point(808, 42);
             this.Refresh_Button.Name = "Refresh_Button";
             this.Refresh_Button.Size = new System.Drawing.Size(32, 23);
             this.Refresh_Button.TabIndex = 4;
@@ -301,7 +296,7 @@
             this.MainPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.MainPanel.Location = new System.Drawing.Point(3, 68);
             this.MainPanel.Name = "MainPanel";
-            this.MainPanel.Size = new System.Drawing.Size(764, 311);
+            this.MainPanel.Size = new System.Drawing.Size(840, 322);
             this.MainPanel.TabIndex = 3;
             // 
             // label2
@@ -330,16 +325,6 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Search";
             // 
-            // StatusLabel
-            // 
-            this.StatusLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.StatusLabel.AutoSize = true;
-            this.StatusLabel.Location = new System.Drawing.Point(12, 437);
-            this.StatusLabel.Name = "StatusLabel";
-            this.StatusLabel.Size = new System.Drawing.Size(38, 13);
-            this.StatusLabel.TabIndex = 0;
-            this.StatusLabel.Text = "Ready";
-            // 
             // Loans_TabPage
             // 
             this.Loans_TabPage.Location = new System.Drawing.Point(4, 22);
@@ -349,12 +334,22 @@
             this.Loans_TabPage.Text = "Loans";
             this.Loans_TabPage.UseVisualStyleBackColor = true;
             // 
+            // StatusLabel
+            // 
+            this.StatusLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.StatusLabel.AutoSize = true;
+            this.StatusLabel.Location = new System.Drawing.Point(12, 448);
+            this.StatusLabel.Name = "StatusLabel";
+            this.StatusLabel.Size = new System.Drawing.Size(38, 13);
+            this.StatusLabel.TabIndex = 0;
+            this.StatusLabel.Text = "Ready";
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(778, 450);
+            this.ClientSize = new System.Drawing.Size(854, 461);
             this.Controls.Add(this.StatusLabel);
             this.Controls.Add(this.MainTabControl);
             this.Controls.Add(this.menuStrip1);

@@ -10,6 +10,8 @@ using System.Windows.Forms;
 using System.IO;
 using Utilities;
 using System.Reflection;
+using System.Threading;
+using System.Windows.Threading;
 
 namespace BookKeeper
 {
@@ -22,14 +24,24 @@ namespace BookKeeper
         {
             InitializeComponent();
             InitializeDirectories();
-            InitializeView();
+            SortByAuthor_RadioButton.Tag = Database.SortParameter.Author;
+            SortByAuthor_RadioButton.CheckedChanged += Sort_RadioButton_CheckedChanged;
+            SortByCategory_RadioButton.Tag = Database.SortParameter.Category;
+            SortByCategory_RadioButton.CheckedChanged += Sort_RadioButton_CheckedChanged;
+            SortByID_RadioButton.Tag = Database.SortParameter.ID;
+            SortByID_RadioButton.CheckedChanged += Sort_RadioButton_CheckedChanged;
+            SortByQtyAvailable_RadioButton.Tag = Database.SortParameter.QuantityAvailable;
+            SortByQtyAvailable_RadioButton.CheckedChanged += Sort_RadioButton_CheckedChanged;
+            SortByTitle_RadioButton.Tag = Database.SortParameter.Title;
+            SortByTitle_RadioButton.CheckedChanged += Sort_RadioButton_CheckedChanged;
+            SetupAsync();
         }
 
 
         #endregion
 
         #region Variables
-        
+
         private readonly string[] AppDirectories = { "Data", "Cache" };
         private Random random = new Random();
         private int ThumbnailWidth { get; set; } = 250;
@@ -39,6 +51,14 @@ namespace BookKeeper
         private Database.SortParameter _SortParameter = Database.SortParameter.Title;
         private List<Book> Books { get; set; } = new List<Book>();
         private List<BookThumbnail> BookThumbnails = new List<BookThumbnail>();
+
+        private readonly Dispatcher UIDispatcher = Dispatcher.CurrentDispatcher;
+
+        private CancellationToken RefreshCancellationToken { get; set; } = CancellationToken.None;
+        private bool RefreshActive { get; set; } = false;
+
+        private CancellationToken SearchCancellationToken { get; set; } = CancellationToken.None;
+        private bool SearchActive { get; set; } = false;
 
         #endregion
 
@@ -54,42 +74,81 @@ namespace BookKeeper
                     Directory.CreateDirectory(folder);
         }
 
-        private async void InitializeView()
+        private async void SetupAsync()
+        {
+            await RefreshMainPanel();
+        }
+
+        /// <summary>
+        /// Refreshes the list of books from the database and updates the main panel asynchronously. The task can be canceled by using the RefreshCancellationToken CancellationToken."
+        /// </summary>
+        /// <returns></returns>
+        private async Task RefreshMainPanel()
         {
             if (Database.Exists)
             {
-                StatusLabel.Text = "Ready";
-                Books = await Database.GetAllBooksAsync(_SortParameter, Database.SortDirection.Asc);
-                int xIndex = 0;
-                int yIndex = 0;
-                int perRow = previousPerRow = MainPanel.Width / (ThumbnailSpacing + ThumbnailWidth);
-                MainPanel.Controls.Clear();
-                int currentIndex = 0;
-                foreach (Book book in Books)
+                try
                 {
-                    BookThumbnail thumbnail = new BookThumbnail(book);
-                    thumbnail.Height = 150;
-                    thumbnail.Width = 250;
-                    thumbnail.Top = yIndex * (ThumbnailHeight + ThumbnailSpacing);
-                    thumbnail.Left = xIndex * (ThumbnailWidth + ThumbnailSpacing);
-                    MainPanel.Controls.Add(thumbnail);
-                    BookThumbnails.Add(thumbnail);
-                    if (++xIndex >= perRow)
+                    await Task.Run(async () =>
                     {
-                        xIndex = 0;
-                        yIndex++;
-                    }
-                    StatusLabel.Text = string.Format("Loading \"{2}\" ({0}/{1})...", ++currentIndex, Books.Count, book.Title);
-                    await Task.Delay(1);
+                        RefreshActive = true;
+                        UIDispatcher.Invoke(() =>
+                        {
+                            StatusLabel.Text = "Ready";
+                        });
+                        Books = await Database.GetAllBooksAsync(_SortParameter, Database.SortDirection.Asc);
+                        int xIndex = 0;
+                        int yIndex = 0;
+                        int perRow = previousPerRow = 0;
+                        UIDispatcher.Invoke(() =>
+                        {
+                            perRow = previousPerRow = MainPanel.Width / (ThumbnailSpacing + ThumbnailWidth);
+                            MainPanel.Controls.Clear();
+                        });
+                        int currentIndex = 0;
+                        foreach (Book book in Books)
+                        {
+                            BookThumbnail thumbnail = new BookThumbnail(book)
+                            {
+                                Height = 150,
+                                Width = 250,
+                                Top = yIndex * (ThumbnailHeight + ThumbnailSpacing),
+                                Left = xIndex * (ThumbnailWidth + ThumbnailSpacing)
+                            };
+                            BookThumbnails.Add(thumbnail);
+                            if (++xIndex >= perRow)
+                            {
+                                xIndex = 0;
+                                yIndex++;
+                            }
+                            UIDispatcher.Invoke(() =>
+                            {
+                                MainPanel.Controls.Add(thumbnail);
+                                StatusLabel.Text = string.Format("Loading \"{2}\" ({0}/{1})...", ++currentIndex, Books.Count, book.Title);
+                            });
+                        }
+                        UIDispatcher.Invoke(() =>
+                        {
+                            StatusLabel.Text = MainPanel.Controls.Count + " items";
+                        });
+                    }, RefreshCancellationToken);
                 }
-                StatusLabel.Text = Books.Count + " items";
+                catch
+                {
+                    MainPanel.Controls.Clear();
+                }
+                finally
+                {
+                    RefreshCancellationToken = CancellationToken.None;
+                    RefreshActive = false;
+                }
             }
             else
             {
                 StatusLabel.Text = "Database file does not exist!";
             }
         }
-
+        
         private void ResizeAll()
         {
             //MainPanel
@@ -111,6 +170,22 @@ namespace BookKeeper
             }
         }
 
+        private async Task Search(string s)
+        {
+            try
+            {
+
+            }
+            catch
+            {
+                RefreshCancellationToken = CancellationToken.None;
+            }
+            finally
+            {
+
+            }
+        }
+
         #endregion
 
         #region Input handling
@@ -124,7 +199,7 @@ namespace BookKeeper
 
         private void NewLoan_MenuItem_Click(object sender, EventArgs e)
         {
-            
+
         }
 
         private void Settings_MenuItem_Click(object sender, EventArgs e)
@@ -150,6 +225,7 @@ namespace BookKeeper
             (new About()).Show();
         }
 
+        [LengthCanBeImproved]
         private void NewBook_MenuItem_Click(object sender, EventArgs e)
         {
 
@@ -200,6 +276,7 @@ namespace BookKeeper
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
+        [LengthCanBeImproved]
         private void NewBookLoan_MenuItem_Click(object sender, EventArgs e)
         {
             ContextMenu contextMenu = new ContextMenu();
@@ -263,42 +340,24 @@ namespace BookKeeper
 
         }
 
-        private void Refresh_Button_Click(object sender, EventArgs e)
+        private async void Refresh_Button_Click(object sender, EventArgs e)
         {
-            InitializeView();
+            await RefreshMainPanel();
         }
 
-        private void SortByTitle_RadioButton_CheckedChanged(object sender, EventArgs e)
-        {
-            _SortParameter = Database.SortParameter.Title;
-            InitializeView();
-        }
-
-        private void SortByAuthor_RadioButton_CheckedChanged(object sender, EventArgs e)
-        {
-            _SortParameter = Database.SortParameter.Author;
-            InitializeView();
-        }
-
-        private void SortByCategory_RadioButton_CheckedChanged(object sender, EventArgs e)
-        {
-            _SortParameter = Database.SortParameter.Category;
-            InitializeView();
-        }
-
-        private void SortByQtyAvailable_RadioButton_CheckedChanged(object sender, EventArgs e)
-        {
-            _SortParameter = Database.SortParameter.QuantityAvailable;
-            InitializeView();
-        }
-
-        private void SortByID_RadioButton_CheckedChanged(object sender, EventArgs e)
-        {
-            _SortParameter = Database.SortParameter.ID;
-            InitializeView();
-        }
 
         #endregion
+
+        async private void Sort_RadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (RefreshActive)
+            {
+                CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+                RefreshCancellationToken = cancellationTokenSource.Token;
+                cancellationTokenSource.Cancel();
+            }
+            await RefreshMainPanel();
+        }
 
         #endregion
     }

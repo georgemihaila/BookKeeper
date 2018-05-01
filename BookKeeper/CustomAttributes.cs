@@ -31,4 +31,12 @@ namespace BookKeeper
 #endif
     }
 
+    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, Inherited = true)]
+    [Description("Specifies whether a method or class can be made smaller in length by optimizing the code. This class can be inherited.")]
+    internal class LengthCanBeImproved : Attribute
+    {
+#if !DEBUG
+#warning Check if you have methods with the Incomplete attribute before release.
+#endif
+    }
 }
