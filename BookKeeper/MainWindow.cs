@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -174,15 +174,36 @@ namespace BookKeeper
         {
             try
             {
-
+                SearchActive = true;
+                await Task.Run(async()=>
+                {
+                    MainPanel.Controls.Clear();
+                    List<BookThumbnail> currentBookThumbnails = BookThumbnails.Where(o => o.Title.Contains(s) || o.Author.Contains(s) || o.Description.Contains(s) || o.Category.Contains(s) || o.QuantityAvailable == Convert.ToUInt32(s) || o.ID == Convert.ToUInt32(s)).ToList();
+                    int xIndex = 0;
+                    int yIndex = 0;
+                    int perRow = previousPerRow = 0;
+                    perRow = previousPerRow = MainPanel.Width / (ThumbnailSpacing + ThumbnailWidth);
+                    int currentIndex = 0;
+                    foreach (BookThumbnail thumbnail in currentBookThumbnails)
+                    {
+                        if (++xIndex >= perRow)
+                        {
+                            xIndex = 0;
+                            yIndex++;
+                        }
+                        MainPanel.Controls.Add(thumbnail); 
+                    }
+                    StatusLabel.Text = MainPanel.Controls.Count + " items";
+                }, SearchCancellationToken);
             }
             catch
             {
-                RefreshCancellationToken = CancellationToken.None;
+
             }
             finally
             {
-
+                SearchCancellationToken = CancellationToken.None;
+                SearchActive = false;
             }
         }
 
