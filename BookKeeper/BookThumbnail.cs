@@ -34,7 +34,13 @@ namespace BookKeeper
             Description = book.Description;
             QuantityAvailable = book.QuantityAvailable;
             Thumbnail = book.Image;
+            ID = book.ID;
         }
+
+        /// <summary>
+        /// Gets the book ID.
+        /// </summary>
+        public uint ID { get; private set; }
 
         /// <summary>
         /// Gets or sets the title field of the control.

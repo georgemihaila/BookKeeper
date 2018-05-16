@@ -177,38 +177,36 @@ namespace BookKeeper
             try
             {
                 SearchActive = true;
-<<<<<<< HEAD
+                SearchCancellationToken = CancellationToken.None;
                 await Task.Run(() =>
                 {
-
-                });
-            }
-            catch
-            {
-            }
-            finally
-            {
-                RefreshCancellationToken = CancellationToken.None;
-=======
-                await Task.Run(async()=>
-                {
-                    MainPanel.Controls.Clear();
-                    List<BookThumbnail> currentBookThumbnails = BookThumbnails.Where(o => o.Title.Contains(s) || o.Author.Contains(s) || o.Description.Contains(s) || o.Category.Contains(s) || o.QuantityAvailable == Convert.ToUInt32(s) || o.ID == Convert.ToUInt32(s)).ToList();
+                    UIDispatcher.Invoke(() => { MainPanel.Controls.Clear(); });
+                    bool numerical = false;
+                    if (uint.TryParse(s, out uint x)) numerical = true;
+                    s = s.ToUpper();
+                    List<BookThumbnail> currentBookThumbnails = (numerical)?BookThumbnails.Where(o => o.QuantityAvailable == Convert.ToUInt32(s) || o.ID == Convert.ToUInt32(s)).ToList(): BookThumbnails.Where(o => o.Title.ToUpper().Contains(s) || o.Author.ToUpper().Contains(s) || o.Description.ToUpper().Contains(s)).ToList();
                     int xIndex = 0;
                     int yIndex = 0;
                     int perRow = previousPerRow = 0;
-                    perRow = previousPerRow = MainPanel.Width / (ThumbnailSpacing + ThumbnailWidth);
-                    int currentIndex = 0;
+                    UIDispatcher.Invoke(() => 
+                    {
+                        perRow = previousPerRow = MainPanel.Width / (ThumbnailSpacing + ThumbnailWidth);
+                    });
                     foreach (BookThumbnail thumbnail in currentBookThumbnails)
                     {
+                        UIDispatcher.Invoke(() =>
+                        {
+                            MainPanel.Controls.Add(thumbnail);
+                            thumbnail.Top = yIndex * (ThumbnailHeight + ThumbnailSpacing);
+                            thumbnail.Left = xIndex * (ThumbnailWidth + ThumbnailSpacing);
+                        });
                         if (++xIndex >= perRow)
                         {
                             xIndex = 0;
                             yIndex++;
                         }
-                        MainPanel.Controls.Add(thumbnail); 
                     }
-                    StatusLabel.Text = MainPanel.Controls.Count + " items";
+                    UIDispatcher.Invoke(() => { StatusLabel.Text = MainPanel.Controls.Count + " items"; });
                 }, SearchCancellationToken);
             }
             catch
@@ -218,7 +216,6 @@ namespace BookKeeper
             finally
             {
                 SearchCancellationToken = CancellationToken.None;
->>>>>>> 596aff44490b6fdb5e3b1bcd748b923480180735
                 SearchActive = false;
             }
         }
@@ -269,9 +266,15 @@ namespace BookKeeper
             this.Text = "BookKeeper - " + (sender as TabControl).SelectedTab.Text;
         }
 
-        private void Search_TextBox_TextChanged(object sender, EventArgs e)
+        async private void Search_TextBox_TextChanged(object sender, EventArgs e)
         {
-
+            if (SearchActive)
+            {
+                CancellationTokenSource sourceTokenSource = new CancellationTokenSource();
+                SearchCancellationToken = sourceTokenSource.Token;
+                sourceTokenSource.Cancel();
+            }
+            await SearchAsync(Search_TextBox.Text);
         }
 
         private async void Refresh_Button_Click(object sender, EventArgs e)
