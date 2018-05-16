@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -177,6 +177,7 @@ namespace BookKeeper
             try
             {
                 SearchActive = true;
+<<<<<<< HEAD
                 await Task.Run(() =>
                 {
 
@@ -188,6 +189,36 @@ namespace BookKeeper
             finally
             {
                 RefreshCancellationToken = CancellationToken.None;
+=======
+                await Task.Run(async()=>
+                {
+                    MainPanel.Controls.Clear();
+                    List<BookThumbnail> currentBookThumbnails = BookThumbnails.Where(o => o.Title.Contains(s) || o.Author.Contains(s) || o.Description.Contains(s) || o.Category.Contains(s) || o.QuantityAvailable == Convert.ToUInt32(s) || o.ID == Convert.ToUInt32(s)).ToList();
+                    int xIndex = 0;
+                    int yIndex = 0;
+                    int perRow = previousPerRow = 0;
+                    perRow = previousPerRow = MainPanel.Width / (ThumbnailSpacing + ThumbnailWidth);
+                    int currentIndex = 0;
+                    foreach (BookThumbnail thumbnail in currentBookThumbnails)
+                    {
+                        if (++xIndex >= perRow)
+                        {
+                            xIndex = 0;
+                            yIndex++;
+                        }
+                        MainPanel.Controls.Add(thumbnail); 
+                    }
+                    StatusLabel.Text = MainPanel.Controls.Count + " items";
+                }, SearchCancellationToken);
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+                SearchCancellationToken = CancellationToken.None;
+>>>>>>> 596aff44490b6fdb5e3b1bcd748b923480180735
                 SearchActive = false;
             }
         }
