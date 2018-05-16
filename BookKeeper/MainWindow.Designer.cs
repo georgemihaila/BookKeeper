@@ -59,10 +59,17 @@
             this.Loans_TabPage = new System.Windows.Forms.TabPage();
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.StatusLabel = new System.Windows.Forms.Label();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.LoanerNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.LoanDateColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ReturnDateColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.BookIDColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.menuStrip1.SuspendLayout();
             this.MainTabControl.SuspendLayout();
             this.Dashboard_TabPage.SuspendLayout();
+            this.Loans_TabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -327,9 +334,10 @@
             // 
             // Loans_TabPage
             // 
+            this.Loans_TabPage.Controls.Add(this.dataGridView1);
             this.Loans_TabPage.Location = new System.Drawing.Point(4, 22);
             this.Loans_TabPage.Name = "Loans_TabPage";
-            this.Loans_TabPage.Size = new System.Drawing.Size(770, 385);
+            this.Loans_TabPage.Size = new System.Drawing.Size(846, 396);
             this.Loans_TabPage.TabIndex = 1;
             this.Loans_TabPage.Text = "Loans";
             this.Loans_TabPage.UseVisualStyleBackColor = true;
@@ -343,6 +351,39 @@
             this.StatusLabel.Size = new System.Drawing.Size(38, 13);
             this.StatusLabel.TabIndex = 0;
             this.StatusLabel.Text = "Ready";
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.LoanerNameColumn,
+            this.LoanDateColumn,
+            this.ReturnDateColumn,
+            this.BookIDColumn});
+            this.dataGridView1.Location = new System.Drawing.Point(3, 52);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.Size = new System.Drawing.Size(444, 150);
+            this.dataGridView1.TabIndex = 0;
+            // 
+            // LoanerNameColumn
+            // 
+            this.LoanerNameColumn.HeaderText = "Name";
+            this.LoanerNameColumn.Name = "LoanerNameColumn";
+            // 
+            // LoanDateColumn
+            // 
+            this.LoanDateColumn.HeaderText = "Loan date";
+            this.LoanDateColumn.Name = "LoanDateColumn";
+            // 
+            // ReturnDateColumn
+            // 
+            this.ReturnDateColumn.HeaderText = "Return date";
+            this.ReturnDateColumn.Name = "ReturnDateColumn";
+            // 
+            // BookIDColumn
+            // 
+            this.BookIDColumn.HeaderText = "Book ID";
+            this.BookIDColumn.Name = "BookIDColumn";
             // 
             // MainWindow
             // 
@@ -365,7 +406,9 @@
             this.MainTabControl.ResumeLayout(false);
             this.Dashboard_TabPage.ResumeLayout(false);
             this.Dashboard_TabPage.PerformLayout();
+            this.Loans_TabPage.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -402,6 +445,11 @@
         private System.Windows.Forms.RadioButton SortByTitle_RadioButton;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TabPage Loans_TabPage;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn LoanerNameColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn LoanDateColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ReturnDateColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn BookIDColumn;
     }
 }
 

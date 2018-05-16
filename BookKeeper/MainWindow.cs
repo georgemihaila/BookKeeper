@@ -51,12 +51,9 @@ namespace BookKeeper
         private Database.SortParameter _SortParameter = Database.SortParameter.Title;
         private List<Book> Books { get; set; } = new List<Book>();
         private List<BookThumbnail> BookThumbnails = new List<BookThumbnail>();
-
         private readonly Dispatcher UIDispatcher = Dispatcher.CurrentDispatcher;
-
         private CancellationToken RefreshCancellationToken { get; set; } = CancellationToken.None;
         private bool RefreshActive { get; set; } = false;
-
         private CancellationToken SearchCancellationToken { get; set; } = CancellationToken.None;
         private bool SearchActive { get; set; } = false;
 
@@ -76,22 +73,22 @@ namespace BookKeeper
 
         private async void SetupAsync()
         {
-            await RefreshMainPanel();
+            await RefreshMainPanelAsync();
         }
 
         /// <summary>
         /// Refreshes the list of books from the database and updates the main panel asynchronously. The task can be canceled by using the RefreshCancellationToken CancellationToken."
         /// </summary>
         /// <returns></returns>
-        private async Task RefreshMainPanel()
+        private async Task RefreshMainPanelAsync()
         {
             if (Database.Exists)
             {
                 try
                 {
+                    RefreshActive = true;
                     await Task.Run(async () =>
                     {
-                        RefreshActive = true;
                         UIDispatcher.Invoke(() =>
                         {
                             StatusLabel.Text = "Ready";
@@ -148,7 +145,12 @@ namespace BookKeeper
                 StatusLabel.Text = "Database file does not exist!";
             }
         }
-        
+
+        private void MainWindow_Resize(object sender, EventArgs e)
+        {
+            ResizeAll();
+        }
+
         private void ResizeAll()
         {
             //MainPanel
@@ -170,32 +172,31 @@ namespace BookKeeper
             }
         }
 
-        private async Task Search(string s)
+        private async Task SearchAsync(string s)
         {
             try
             {
+                SearchActive = true;
+                await Task.Run(() =>
+                {
 
+                });
             }
             catch
             {
-                RefreshCancellationToken = CancellationToken.None;
             }
             finally
             {
-
+                RefreshCancellationToken = CancellationToken.None;
+                SearchActive = false;
             }
         }
-
+        
         #endregion
 
         #region Input handling
 
         #region Menu
-
-        private void MainWindow_Resize(object sender, EventArgs e)
-        {
-            ResizeAll();
-        }
 
         private void NewLoan_MenuItem_Click(object sender, EventArgs e)
         {
@@ -223,6 +224,44 @@ namespace BookKeeper
         private void About_MenuItem_Click(object sender, EventArgs e)
         {
             (new About()).Show();
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Updates the title of the window according to the tab the user has navigated to.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MainTabControl_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.Text = "BookKeeper - " + (sender as TabControl).SelectedTab.Text;
+        }
+
+        private void Search_TextBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private async void Refresh_Button_Click(object sender, EventArgs e)
+        {
+            await RefreshMainPanelAsync();
+        }
+
+        async private void Sort_RadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (RefreshActive)
+            {
+                CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+                RefreshCancellationToken = cancellationTokenSource.Token;
+                cancellationTokenSource.Cancel();
+            }
+            await RefreshMainPanelAsync();
+        }
+
+        private void Print_MenuItem_Click(object sender, EventArgs e)
+        {
+
         }
 
         [LengthCanBeImproved]
@@ -264,11 +303,6 @@ namespace BookKeeper
 
             MainTabControl.Controls.Add(newBookPage);
             MainTabControl.SelectedIndex = MainTabControl.Controls.Count - 1;
-        }
-
-        private void Print_MenuItem_Click(object sender, EventArgs e)
-        {
-
         }
 
         /// <summary>
@@ -324,41 +358,6 @@ namespace BookKeeper
             MainTabControl.Controls.Add(newBookLoanPage);
             MainTabControl.SelectedIndex = MainTabControl.Controls.Count - 1;
         }
-
-        /// <summary>
-        /// Updates the title of the window according to the tab the user has navigated to.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void MainTabControl_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            this.Text = "BookKeeper - " + (sender as TabControl).SelectedTab.Text;
-        }
-
-        private void Search_TextBox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private async void Refresh_Button_Click(object sender, EventArgs e)
-        {
-            await RefreshMainPanel();
-        }
-
-
-        #endregion
-
-        async private void Sort_RadioButton_CheckedChanged(object sender, EventArgs e)
-        {
-            if (RefreshActive)
-            {
-                CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-                RefreshCancellationToken = cancellationTokenSource.Token;
-                cancellationTokenSource.Cancel();
-            }
-            await RefreshMainPanel();
-        }
-
         #endregion
     }
 }
