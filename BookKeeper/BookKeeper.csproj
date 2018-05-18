@@ -79,6 +79,7 @@
       <DependentUpon>About.cs</DependentUpon>
     </Compile>
     <Compile Include="Book.cs" />
+    <Compile Include="BookLoan.cs" />
     <Compile Include="BookThumbnail.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -92,11 +93,11 @@
     <Compile Include="MainWindow.Designer.cs">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="NewBook.cs">
+    <Compile Include="BookAddDialog.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="NewBook.Designer.cs">
-      <DependentUpon>NewBook.cs</DependentUpon>
+    <Compile Include="BookAddDialog.Designer.cs">
+      <DependentUpon>BookAddDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -110,8 +111,8 @@
     <EmbeddedResource Include="MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="NewBook.resx">
-      <DependentUpon>NewBook.cs</DependentUpon>
+    <EmbeddedResource Include="BookAddDialog.resx">
+      <DependentUpon>BookAddDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

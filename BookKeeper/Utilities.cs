@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.SQLite;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -109,6 +110,50 @@ namespace Utilities
             }
             return Books;
         }
+
+        /// <summary>
+        /// Adds a book loan to the database asynchronously.
+        /// </summary>
+        /// <param name="bookLoan"></param>
+        /// <returns></returns>
+        public static async Task AddBookLoanAsync(BookLoan bookLoan)
+        {
+            SQLiteConnection connection = new SQLiteConnection(ConnectionString);
+            await connection.OpenAsync();
+            SQLiteCommand command = new SQLiteCommand(string.Format("insert into Loans values (\"{0}\", \"{1}\", \"{2}\", {3});", bookLoan.LoanerName, bookLoan.LoanDate.Ticks.ToString(), bookLoan.ReturnDate.Ticks.ToString(),bookLoan.BookID))
+            {
+                Connection = connection
+            };
+            SQLiteDataReader reader = command.ExecuteReader(System.Data.CommandBehavior.CloseConnection);
+        }
+
+        /// <summary>
+        /// Retrieves all the book loans from the databse asynchronously.
+        /// </summary>
+        /// <returns></returns>
+        public static async Task<List<BookLoan>> GetAllBookLoansAsync()
+        {
+            SQLiteConnection connection = new SQLiteConnection(ConnectionString);
+            await connection.OpenAsync();
+            SQLiteCommand command = new SQLiteCommand(string.Format("select * from Loans;"))
+            {
+                Connection = connection
+            };
+            SQLiteDataReader reader = command.ExecuteReader(System.Data.CommandBehavior.CloseConnection);
+            List<BookLoan> Loans = new List<BookLoan>();
+            while (await reader.ReadAsync())
+            {
+                BookLoan bookLoan = new BookLoan()
+                {
+                    LoanerName = reader[0].ToString(),
+                    LoanDate = new DateTime(Convert.ToInt64(reader[1].ToString())),
+                    ReturnDate = new DateTime(Convert.ToInt64(reader[2].ToString())),
+                    BookID = Convert.ToUInt32(reader[3].ToString())
+                };
+                Loans.Add(bookLoan);
+            }
+            return Loans;
+        }
     }
 
     /// <summary>
@@ -158,6 +203,35 @@ namespace Utilities
 
             return text;
         }
+
+        public static string Base64Encode(this string plainText)
+        {
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
+            return System.Convert.ToBase64String(plainTextBytes);
+        }
+
+        public static string Base64Decode(this string base64EncodedData)
+        {
+            var base64EncodedBytes = System.Convert.FromBase64String(base64EncodedData);
+            return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
+        }
+
+
+        /// <summary>
+        /// Formats a string in order for it to be used in a search query.
+        /// The method returns the input string in uppercase, without any special characters and without any double, leading or ending spaces.
+        /// </summary>
+        /// <param name="s">The input string.</param>
+        /// <returns></returns>
+        public static string FormatForSearch(this string s)
+        {
+            s = s.ToUpper();
+            while (s.Contains("  ")) s = s.Replace("  ", " ");
+            while (s.EndsWith(" ")) s = s.Remove(s.Length - 1, 1);
+            while (s.StartsWith(" ")) s = s.Remove(0, 1);
+            s = new string(s.Where(c => Char.IsLetter(c) || c == ' ' || Char.IsNumber(c)).ToArray());
+            return s;
+        }
     }
 
     /// <summary>
@@ -172,24 +246,6 @@ namespace Utilities
                 bitmap.Save(memoryStream, System.Drawing.Imaging.ImageFormat.Jpeg);
                 return memoryStream.ToArray();
             }
-        }
-    }
-
-    /// <summary>
-    /// A class for managing strings.
-    /// </summary>
-    public static class StringHelpers
-    {
-        public static string Base64Encode(this string plainText)
-        {
-            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
-            return System.Convert.ToBase64String(plainTextBytes);
-        }
-
-        public static string Base64Decode(this string base64EncodedData)
-        {
-            var base64EncodedBytes = System.Convert.FromBase64String(base64EncodedData);
-            return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
         }
     }
 }

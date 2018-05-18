@@ -34,6 +34,7 @@
             this.Author_Label = new System.Windows.Forms.Label();
             this.Description_Label = new System.Windows.Forms.Label();
             this.QuantityAvailable_Label = new System.Windows.Forms.Label();
+            this.Details_Button = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.Thumbnail_PictureBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -98,11 +99,24 @@
             this.QuantityAvailable_Label.MouseEnter += new System.EventHandler(this.Element_MouseEnter);
             this.QuantityAvailable_Label.MouseLeave += new System.EventHandler(this.Element_MouseLeave);
             // 
+            // Details_Button
+            // 
+            this.Details_Button.BackColor = System.Drawing.Color.White;
+            this.Details_Button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Details_Button.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.Details_Button.Location = new System.Drawing.Point(-135, 70);
+            this.Details_Button.Name = "Details_Button";
+            this.Details_Button.Size = new System.Drawing.Size(135, 23);
+            this.Details_Button.TabIndex = 5;
+            this.Details_Button.Text = "Details";
+            this.Details_Button.UseVisualStyleBackColor = false;
+            // 
             // BookThumbnail
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
+            this.Controls.Add(this.Details_Button);
             this.Controls.Add(this.QuantityAvailable_Label);
             this.Controls.Add(this.Description_Label);
             this.Controls.Add(this.Author_Label);
@@ -126,5 +140,6 @@
         private System.Windows.Forms.Label Author_Label;
         private System.Windows.Forms.Label Description_Label;
         private System.Windows.Forms.Label QuantityAvailable_Label;
+        private System.Windows.Forms.Button Details_Button;
     }
 }

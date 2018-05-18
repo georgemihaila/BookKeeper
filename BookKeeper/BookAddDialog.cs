@@ -12,9 +12,9 @@ using System.Net;
 
 namespace BookKeeper
 {
-    public partial class NewBook : UserControl
+    public partial class BookAddDialog : UserControl
     {
-        public NewBook()
+        public BookAddDialog()
         {
             InitializeComponent();
         }

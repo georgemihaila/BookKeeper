@@ -1,6 +1,6 @@
 ﻿namespace BookKeeper
 {
-    partial class NewBook
+    partial class BookAddDialog
     {
         /// <summary> 
         /// Required designer variable.

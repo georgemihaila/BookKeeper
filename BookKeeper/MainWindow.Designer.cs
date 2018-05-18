@@ -1,4 +1,6 @@
-﻿namespace BookKeeper
+﻿using System.Windows.Forms;
+
+namespace BookKeeper
 {
     partial class MainWindow
     {
@@ -45,6 +47,7 @@
             this.About_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainTabControl = new System.Windows.Forms.TabControl();
             this.Dashboard_TabPage = new System.Windows.Forms.TabPage();
+            this.ClearSearch_Button = new System.Windows.Forms.Button();
             this.SortByID_RadioButton = new System.Windows.Forms.RadioButton();
             this.SortByQtyAvailable_RadioButton = new System.Windows.Forms.RadioButton();
             this.SortByCategory_RadioButton = new System.Windows.Forms.RadioButton();
@@ -57,19 +60,18 @@
             this.Search_TextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.Loans_TabPage = new System.Windows.Forms.TabPage();
+            this.Loans_ListView = new System.Windows.Forms.ListView();
+            this.BookID_ColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.LoanerName_ColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.LoanDate_ColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.ReturnDate_ColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.StatusLabel = new System.Windows.Forms.Label();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.LoanerNameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.LoanDateColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ReturnDateColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.BookIDColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.menuStrip1.SuspendLayout();
             this.MainTabControl.SuspendLayout();
             this.Dashboard_TabPage.SuspendLayout();
             this.Loans_TabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -202,6 +204,7 @@
             // 
             // Dashboard_TabPage
             // 
+            this.Dashboard_TabPage.Controls.Add(this.ClearSearch_Button);
             this.Dashboard_TabPage.Controls.Add(this.SortByID_RadioButton);
             this.Dashboard_TabPage.Controls.Add(this.SortByQtyAvailable_RadioButton);
             this.Dashboard_TabPage.Controls.Add(this.SortByCategory_RadioButton);
@@ -221,10 +224,24 @@
             this.Dashboard_TabPage.Text = "Dashboard";
             this.Dashboard_TabPage.UseVisualStyleBackColor = true;
             // 
+            // ClearSearch_Button
+            // 
+            this.ClearSearch_Button.BackColor = System.Drawing.Color.Transparent;
+            this.ClearSearch_Button.FlatAppearance.BorderSize = 0;
+            this.ClearSearch_Button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ClearSearch_Button.Location = new System.Drawing.Point(223, 27);
+            this.ClearSearch_Button.Name = "ClearSearch_Button";
+            this.ClearSearch_Button.Size = new System.Drawing.Size(24, 23);
+            this.ClearSearch_Button.TabIndex = 11;
+            this.ClearSearch_Button.TabStop = false;
+            this.ClearSearch_Button.Text = "x";
+            this.ClearSearch_Button.UseVisualStyleBackColor = false;
+            this.ClearSearch_Button.Click += new System.EventHandler(this.ClearSearch_Button_Click);
+            // 
             // SortByID_RadioButton
             // 
             this.SortByID_RadioButton.AutoSize = true;
-            this.SortByID_RadioButton.Location = new System.Drawing.Point(576, 29);
+            this.SortByID_RadioButton.Location = new System.Drawing.Point(589, 29);
             this.SortByID_RadioButton.Name = "SortByID_RadioButton";
             this.SortByID_RadioButton.Size = new System.Drawing.Size(36, 17);
             this.SortByID_RadioButton.TabIndex = 10;
@@ -234,7 +251,7 @@
             // SortByQtyAvailable_RadioButton
             // 
             this.SortByQtyAvailable_RadioButton.AutoSize = true;
-            this.SortByQtyAvailable_RadioButton.Location = new System.Drawing.Point(481, 30);
+            this.SortByQtyAvailable_RadioButton.Location = new System.Drawing.Point(494, 30);
             this.SortByQtyAvailable_RadioButton.Name = "SortByQtyAvailable_RadioButton";
             this.SortByQtyAvailable_RadioButton.Size = new System.Drawing.Size(89, 17);
             this.SortByQtyAvailable_RadioButton.TabIndex = 9;
@@ -244,7 +261,7 @@
             // SortByCategory_RadioButton
             // 
             this.SortByCategory_RadioButton.AutoSize = true;
-            this.SortByCategory_RadioButton.Location = new System.Drawing.Point(408, 30);
+            this.SortByCategory_RadioButton.Location = new System.Drawing.Point(421, 30);
             this.SortByCategory_RadioButton.Name = "SortByCategory_RadioButton";
             this.SortByCategory_RadioButton.Size = new System.Drawing.Size(67, 17);
             this.SortByCategory_RadioButton.TabIndex = 8;
@@ -254,7 +271,7 @@
             // SortByAuthor_RadioButton
             // 
             this.SortByAuthor_RadioButton.AutoSize = true;
-            this.SortByAuthor_RadioButton.Location = new System.Drawing.Point(346, 30);
+            this.SortByAuthor_RadioButton.Location = new System.Drawing.Point(359, 30);
             this.SortByAuthor_RadioButton.Name = "SortByAuthor_RadioButton";
             this.SortByAuthor_RadioButton.Size = new System.Drawing.Size(56, 17);
             this.SortByAuthor_RadioButton.TabIndex = 7;
@@ -265,7 +282,7 @@
             // 
             this.SortByTitle_RadioButton.AutoSize = true;
             this.SortByTitle_RadioButton.Checked = true;
-            this.SortByTitle_RadioButton.Location = new System.Drawing.Point(295, 30);
+            this.SortByTitle_RadioButton.Location = new System.Drawing.Point(308, 30);
             this.SortByTitle_RadioButton.Name = "SortByTitle_RadioButton";
             this.SortByTitle_RadioButton.Size = new System.Drawing.Size(45, 17);
             this.SortByTitle_RadioButton.TabIndex = 6;
@@ -276,11 +293,11 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(246, 32);
+            this.label3.Location = new System.Drawing.Point(253, 32);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(43, 13);
+            this.label3.Size = new System.Drawing.Size(53, 13);
             this.label3.TabIndex = 5;
-            this.label3.Text = "Sort by:";
+            this.label3.Text = "Group by:";
             // 
             // Refresh_Button
             // 
@@ -319,7 +336,7 @@
             // 
             this.Search_TextBox.Location = new System.Drawing.Point(11, 29);
             this.Search_TextBox.Name = "Search_TextBox";
-            this.Search_TextBox.Size = new System.Drawing.Size(229, 20);
+            this.Search_TextBox.Size = new System.Drawing.Size(206, 20);
             this.Search_TextBox.TabIndex = 1;
             this.Search_TextBox.TextChanged += new System.EventHandler(this.Search_TextBox_TextChanged);
             // 
@@ -334,13 +351,49 @@
             // 
             // Loans_TabPage
             // 
-            this.Loans_TabPage.Controls.Add(this.dataGridView1);
+            this.Loans_TabPage.Controls.Add(this.Loans_ListView);
             this.Loans_TabPage.Location = new System.Drawing.Point(4, 22);
             this.Loans_TabPage.Name = "Loans_TabPage";
             this.Loans_TabPage.Size = new System.Drawing.Size(846, 396);
             this.Loans_TabPage.TabIndex = 1;
             this.Loans_TabPage.Text = "Loans";
             this.Loans_TabPage.UseVisualStyleBackColor = true;
+            // 
+            // Loans_ListView
+            // 
+            this.Loans_ListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.BookID_ColumnHeader,
+            this.LoanerName_ColumnHeader,
+            this.LoanDate_ColumnHeader,
+            this.ReturnDate_ColumnHeader});
+            this.Loans_ListView.HoverSelection = true;
+            this.Loans_ListView.Location = new System.Drawing.Point(8, 13);
+            this.Loans_ListView.Name = "Loans_ListView";
+            this.Loans_ListView.Size = new System.Drawing.Size(469, 201);
+            this.Loans_ListView.TabIndex = 0;
+            this.Loans_ListView.UseCompatibleStateImageBehavior = false;
+            this.Loans_ListView.View = System.Windows.Forms.View.Details;
+            this.Loans_ListView.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.Loans_ListView_ColumnClick);
+            // 
+            // BookID_ColumnHeader
+            // 
+            this.BookID_ColumnHeader.Text = "Book ID";
+            this.BookID_ColumnHeader.Width = 65;
+            // 
+            // LoanerName_ColumnHeader
+            // 
+            this.LoanerName_ColumnHeader.Text = "Loaner name";
+            this.LoanerName_ColumnHeader.Width = 75;
+            // 
+            // LoanDate_ColumnHeader
+            // 
+            this.LoanDate_ColumnHeader.Text = "Loan date";
+            this.LoanDate_ColumnHeader.Width = 78;
+            // 
+            // ReturnDate_ColumnHeader
+            // 
+            this.ReturnDate_ColumnHeader.Text = "Return date";
+            this.ReturnDate_ColumnHeader.Width = 89;
             // 
             // StatusLabel
             // 
@@ -351,39 +404,6 @@
             this.StatusLabel.Size = new System.Drawing.Size(38, 13);
             this.StatusLabel.TabIndex = 0;
             this.StatusLabel.Text = "Ready";
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.LoanerNameColumn,
-            this.LoanDateColumn,
-            this.ReturnDateColumn,
-            this.BookIDColumn});
-            this.dataGridView1.Location = new System.Drawing.Point(3, 52);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(444, 150);
-            this.dataGridView1.TabIndex = 0;
-            // 
-            // LoanerNameColumn
-            // 
-            this.LoanerNameColumn.HeaderText = "Name";
-            this.LoanerNameColumn.Name = "LoanerNameColumn";
-            // 
-            // LoanDateColumn
-            // 
-            this.LoanDateColumn.HeaderText = "Loan date";
-            this.LoanDateColumn.Name = "LoanDateColumn";
-            // 
-            // ReturnDateColumn
-            // 
-            this.ReturnDateColumn.HeaderText = "Return date";
-            this.ReturnDateColumn.Name = "ReturnDateColumn";
-            // 
-            // BookIDColumn
-            // 
-            this.BookIDColumn.HeaderText = "Book ID";
-            this.BookIDColumn.Name = "BookIDColumn";
             // 
             // MainWindow
             // 
@@ -408,7 +428,6 @@
             this.Dashboard_TabPage.PerformLayout();
             this.Loans_TabPage.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -445,11 +464,12 @@
         private System.Windows.Forms.RadioButton SortByTitle_RadioButton;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TabPage Loans_TabPage;
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn LoanerNameColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn LoanDateColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ReturnDateColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn BookIDColumn;
+        private System.Windows.Forms.Button ClearSearch_Button;
+        private ListView Loans_ListView;
+        private ColumnHeader BookID_ColumnHeader;
+        private ColumnHeader LoanerName_ColumnHeader;
+        private ColumnHeader LoanDate_ColumnHeader;
+        private ColumnHeader ReturnDate_ColumnHeader;
     }
 }
 

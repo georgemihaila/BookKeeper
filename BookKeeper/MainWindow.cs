@@ -56,6 +56,9 @@ namespace BookKeeper
         private bool RefreshActive { get; set; } = false;
         private CancellationToken SearchCancellationToken { get; set; } = CancellationToken.None;
         private bool SearchActive { get; set; } = false;
+        private List<BookLoan> BookLoans { get; set; } = new List<BookLoan>();
+        private ListSortDirection BookLoans_SortDirection { get; set; } = ListSortDirection.Descending;
+        private int BookLoans_LastColumnIndex { get; set; } = 0;
 
         #endregion
 
@@ -74,6 +77,17 @@ namespace BookKeeper
         private async void SetupAsync()
         {
             await RefreshMainPanelAsync();
+            await RefreshLoansListViewAsync();
+        }
+
+        private async Task RefreshLoansListViewAsync()
+        {
+            BookLoans = await Database.GetAllBookLoansAsync();
+            Loans_ListView.Items.Clear();
+            foreach (var bookLoan in BookLoans)
+            {
+                Loans_ListView.Items.Add(bookLoan.ToListViewItem());
+            }
         }
 
         /// <summary>
@@ -112,6 +126,7 @@ namespace BookKeeper
                                 Top = yIndex * (ThumbnailHeight + ThumbnailSpacing),
                                 Left = xIndex * (ThumbnailWidth + ThumbnailSpacing)
                             };
+                            thumbnail.DetailsButtonClicked += Thumbnail_DetailsButtonClicked;
                             BookThumbnails.Add(thumbnail);
                             if (++xIndex >= perRow)
                             {
@@ -146,6 +161,14 @@ namespace BookKeeper
             }
         }
 
+        private void Thumbnail_DetailsButtonClicked(object sender, Book e)
+        {
+            TabPage tabPage = new TabPage();
+            tabPage.Text = e.Title;
+            MessageBox.Show("OK");
+            MainTabControl.Controls.Add(tabPage);
+        }
+
         private void MainWindow_Resize(object sender, EventArgs e)
         {
             ResizeAll();
@@ -178,23 +201,24 @@ namespace BookKeeper
             {
                 SearchActive = true;
                 SearchCancellationToken = CancellationToken.None;
-                await Task.Run(() =>
+                await Task.Run(async() =>
                 {
-                    UIDispatcher.Invoke(() => { MainPanel.Controls.Clear(); });
                     bool numerical = false;
-                    if (uint.TryParse(s, out uint x)) numerical = true;
-                    s = s.ToUpper();
-                    List<BookThumbnail> currentBookThumbnails = (numerical)?BookThumbnails.Where(o => o.QuantityAvailable == Convert.ToUInt32(s) || o.ID == Convert.ToUInt32(s)).ToList(): BookThumbnails.Where(o => o.Title.ToUpper().Contains(s) || o.Author.ToUpper().Contains(s) || o.Description.ToUpper().Contains(s)).ToList();
+                    if (uint.TryParse(s, out uint demoUint)) numerical = true;
+                    s = s.FormatForSearch();
+                    List<BookThumbnail> currentBookThumbnails = (numerical)?BookThumbnails.Where(o => o.QuantityAvailable == Convert.ToUInt32(s) || o.ID.ToString().Contains(s)).ToList(): BookThumbnails.Where(o => o.Title.FormatForSearch().Contains(s) || o.Author.FormatForSearch().Contains(s) || o.Description.FormatForSearch().Contains(s)).ToList();
+                   // if (currentBookThumbnails.Count == BookThumbnails.Count) return;
+                    await UIDispatcher.InvokeAsync(() => { MainPanel.Controls.Clear(); });
                     int xIndex = 0;
                     int yIndex = 0;
                     int perRow = previousPerRow = 0;
-                    UIDispatcher.Invoke(() => 
+                    await UIDispatcher.InvokeAsync(() => 
                     {
                         perRow = previousPerRow = MainPanel.Width / (ThumbnailSpacing + ThumbnailWidth);
                     });
                     foreach (BookThumbnail thumbnail in currentBookThumbnails)
                     {
-                        UIDispatcher.Invoke(() =>
+                        await UIDispatcher.InvokeAsync(() =>
                         {
                             MainPanel.Controls.Add(thumbnail);
                             thumbnail.Top = yIndex * (ThumbnailHeight + ThumbnailSpacing);
@@ -206,7 +230,7 @@ namespace BookKeeper
                             yIndex++;
                         }
                     }
-                    UIDispatcher.Invoke(() => { StatusLabel.Text = MainPanel.Controls.Count + " items"; });
+                    await UIDispatcher.InvokeAsync(() => { StatusLabel.Text = MainPanel.Controls.Count + " items"; });
                 }, SearchCancellationToken);
             }
             catch
@@ -227,6 +251,11 @@ namespace BookKeeper
         #region Menu
 
         private void NewLoan_MenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Print_MenuItem_Click(object sender, EventArgs e)
         {
 
         }
@@ -266,6 +295,32 @@ namespace BookKeeper
             this.Text = "BookKeeper - " + (sender as TabControl).SelectedTab.Text;
         }
 
+        private void Loans_ListView_ColumnClick(object sender, ColumnClickEventArgs e)
+        {
+            if (e.Column == BookLoans_LastColumnIndex) BookLoans_SortDirection = (BookLoans_SortDirection == ListSortDirection.Ascending) ? ListSortDirection.Descending : ListSortDirection.Ascending;
+            BookLoans_LastColumnIndex = e.Column;
+            switch (e.Column)
+            {
+                case 0:
+                    BookLoans = (BookLoans_SortDirection == ListSortDirection.Ascending) ? BookLoans.OrderBy(o => o.BookID).ToList() : BookLoans.OrderByDescending(o => o.BookID).ToList();
+                    break;
+                case 1:
+                    BookLoans = (BookLoans_SortDirection == ListSortDirection.Ascending) ? BookLoans.OrderBy(o => o.LoanerName).ToList() : BookLoans.OrderByDescending(o => o.LoanerName).ToList();
+                    break;
+                case 2:
+                    BookLoans = (BookLoans_SortDirection == ListSortDirection.Ascending) ? BookLoans.OrderBy(o => o.LoanDate).ToList() : BookLoans.OrderByDescending(o => o.LoanDate).ToList();
+                    break;
+                case 3:
+                    BookLoans = (BookLoans_SortDirection == ListSortDirection.Ascending) ? BookLoans.OrderBy(o => o.ReturnDate).ToList() : BookLoans.OrderByDescending(o => o.ReturnDate).ToList();
+                    break;
+            }
+            Loans_ListView.Items.Clear();
+            foreach (var x in BookLoans)
+            {
+                Loans_ListView.Items.Add(x.ToListViewItem());
+            }
+        }
+
         async private void Search_TextBox_TextChanged(object sender, EventArgs e)
         {
             if (SearchActive)
@@ -293,10 +348,11 @@ namespace BookKeeper
             await RefreshMainPanelAsync();
         }
 
-        private void Print_MenuItem_Click(object sender, EventArgs e)
+        private void ClearSearch_Button_Click(object sender, EventArgs e)
         {
-
+            Search_TextBox.Text = string.Empty;
         }
+
 
         [LengthCanBeImproved]
         private void NewBook_MenuItem_Click(object sender, EventArgs e)
@@ -332,7 +388,7 @@ namespace BookKeeper
             };
             contextMenu.MenuItems.Add(closeAllMenuItem);
 
-            NewBook newBookControl = new NewBook();
+            BookAddDialog newBookControl = new BookAddDialog();
             newBookPage.Controls.Add(newBookControl);
 
             MainTabControl.Controls.Add(newBookPage);
@@ -392,6 +448,8 @@ namespace BookKeeper
             MainTabControl.Controls.Add(newBookLoanPage);
             MainTabControl.SelectedIndex = MainTabControl.Controls.Count - 1;
         }
+
         #endregion
+
     }
 }
