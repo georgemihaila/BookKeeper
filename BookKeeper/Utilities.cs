@@ -120,11 +120,13 @@ namespace Utilities
         {
             SQLiteConnection connection = new SQLiteConnection(ConnectionString);
             await connection.OpenAsync();
-            SQLiteCommand command = new SQLiteCommand(string.Format("insert into Loans values (\"{0}\", \"{1}\", \"{2}\", {3});", bookLoan.LoanerName, bookLoan.LoanDate.Ticks.ToString(), bookLoan.ReturnDate.Ticks.ToString(),bookLoan.BookID))
+            SQLiteCommand command = new SQLiteCommand(string.Format("insert into Loans values (\"{0}\", \"{1}\", \"{2}\", {3}); update Books set(QuantityAvailable) = (QuantityAvailable - 1) where ID = {3};", bookLoan.LoanerName, bookLoan.LoanDate.Ticks.ToString(), bookLoan.ReturnDate.Ticks.ToString(),bookLoan.BookID))
             {
                 Connection = connection
             };
             SQLiteDataReader reader = command.ExecuteReader(System.Data.CommandBehavior.CloseConnection);
+
+            //update Books set(QuantityAvailable) = (QuantityAvailable - 1) where ID = 2384;
         }
 
         /// <summary>

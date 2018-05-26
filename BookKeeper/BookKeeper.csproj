@@ -79,6 +79,12 @@
       <DependentUpon>About.cs</DependentUpon>
     </Compile>
     <Compile Include="Book.cs" />
+    <Compile Include="BookDetailsDialog.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BookDetailsDialog.Designer.cs">
+      <DependentUpon>BookDetailsDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="BookLoan.cs" />
     <Compile Include="BookThumbnail.cs">
       <SubType>UserControl</SubType>
@@ -87,6 +93,12 @@
       <DependentUpon>BookThumbnail.cs</DependentUpon>
     </Compile>
     <Compile Include="CustomAttributes.cs" />
+    <Compile Include="LendBookDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LendBookDialog.Designer.cs">
+      <DependentUpon>LendBookDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -105,8 +117,14 @@
     <EmbeddedResource Include="About.resx">
       <DependentUpon>About.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="BookDetailsDialog.resx">
+      <DependentUpon>BookDetailsDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="BookThumbnail.resx">
       <DependentUpon>BookThumbnail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LendBookDialog.resx">
+      <DependentUpon>LendBookDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>

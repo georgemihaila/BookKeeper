@@ -30,9 +30,8 @@ namespace BookKeeper
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.MainMenuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.NewLoan_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.NewBookLoan_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -43,7 +42,6 @@ namespace BookKeeper
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.Exit_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.Shortcuts_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.About_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainTabControl = new System.Windows.Forms.TabControl();
             this.Dashboard_TabPage = new System.Windows.Forms.TabPage();
@@ -60,30 +58,31 @@ namespace BookKeeper
             this.Search_TextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.Loans_TabPage = new System.Windows.Forms.TabPage();
+            this.LendBook_Button = new System.Windows.Forms.Button();
+            this.ReturnBook_Button = new System.Windows.Forms.Button();
+            this.BookPreview_BookThumbnail = new BookKeeper.BookThumbnail();
             this.Loans_ListView = new System.Windows.Forms.ListView();
             this.BookID_ColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.LoanerName_ColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.LoanDate_ColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ReturnDate_ColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.StatusLabel = new System.Windows.Forms.Label();
-            this.menuStrip1.SuspendLayout();
+            this.MainMenuStrip.SuspendLayout();
             this.MainTabControl.SuspendLayout();
             this.Dashboard_TabPage.SuspendLayout();
             this.Loans_TabPage.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.SuspendLayout();
             // 
-            // menuStrip1
+            // MainMenuStrip
             // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MainMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.helpToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(854, 24);
-            this.menuStrip1.TabIndex = 0;
-            this.menuStrip1.Text = "menuStrip1";
+            this.MainMenuStrip.Location = new System.Drawing.Point(0, 0);
+            this.MainMenuStrip.Name = "MainMenuStrip";
+            this.MainMenuStrip.Size = new System.Drawing.Size(854, 24);
+            this.MainMenuStrip.TabIndex = 0;
+            this.MainMenuStrip.Text = "menuStrip1";
             // 
             // fileToolStripMenuItem
             // 
@@ -167,24 +166,16 @@ namespace BookKeeper
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.Shortcuts_MenuItem,
             this.About_MenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.helpToolStripMenuItem.Text = "Help";
             // 
-            // Shortcuts_MenuItem
-            // 
-            this.Shortcuts_MenuItem.Image = ((System.Drawing.Image)(resources.GetObject("Shortcuts_MenuItem.Image")));
-            this.Shortcuts_MenuItem.Name = "Shortcuts_MenuItem";
-            this.Shortcuts_MenuItem.Size = new System.Drawing.Size(173, 22);
-            this.Shortcuts_MenuItem.Text = "Shortcuts";
-            // 
             // About_MenuItem
             // 
             this.About_MenuItem.Image = ((System.Drawing.Image)(resources.GetObject("About_MenuItem.Image")));
             this.About_MenuItem.Name = "About_MenuItem";
-            this.About_MenuItem.Size = new System.Drawing.Size(173, 22);
+            this.About_MenuItem.Size = new System.Drawing.Size(180, 22);
             this.About_MenuItem.Text = "About BookKeeper";
             this.About_MenuItem.Click += new System.EventHandler(this.About_MenuItem_Click);
             // 
@@ -351,6 +342,9 @@ namespace BookKeeper
             // 
             // Loans_TabPage
             // 
+            this.Loans_TabPage.Controls.Add(this.LendBook_Button);
+            this.Loans_TabPage.Controls.Add(this.ReturnBook_Button);
+            this.Loans_TabPage.Controls.Add(this.BookPreview_BookThumbnail);
             this.Loans_TabPage.Controls.Add(this.Loans_ListView);
             this.Loans_TabPage.Location = new System.Drawing.Point(4, 22);
             this.Loans_TabPage.Name = "Loans_TabPage";
@@ -359,6 +353,51 @@ namespace BookKeeper
             this.Loans_TabPage.Text = "Loans";
             this.Loans_TabPage.UseVisualStyleBackColor = true;
             // 
+            // LendBook_Button
+            // 
+            this.LendBook_Button.BackColor = System.Drawing.Color.YellowGreen;
+            this.LendBook_Button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.LendBook_Button.ForeColor = System.Drawing.Color.White;
+            this.LendBook_Button.Location = new System.Drawing.Point(593, 169);
+            this.LendBook_Button.Name = "LendBook_Button";
+            this.LendBook_Button.Size = new System.Drawing.Size(75, 23);
+            this.LendBook_Button.TabIndex = 3;
+            this.LendBook_Button.Text = "Lend";
+            this.LendBook_Button.UseVisualStyleBackColor = false;
+            this.LendBook_Button.Click += new System.EventHandler(this.LendBook_Button_Click);
+            // 
+            // ReturnBook_Button
+            // 
+            this.ReturnBook_Button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ReturnBook_Button.BackColor = System.Drawing.Color.YellowGreen;
+            this.ReturnBook_Button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ReturnBook_Button.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ReturnBook_Button.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.ReturnBook_Button.Location = new System.Drawing.Point(512, 169);
+            this.ReturnBook_Button.Name = "ReturnBook_Button";
+            this.ReturnBook_Button.Size = new System.Drawing.Size(75, 23);
+            this.ReturnBook_Button.TabIndex = 2;
+            this.ReturnBook_Button.Text = "Return";
+            this.ReturnBook_Button.UseVisualStyleBackColor = false;
+            this.ReturnBook_Button.Click += new System.EventHandler(this.ReturnBook_Button_Click);
+            // 
+            // BookPreview_BookThumbnail
+            // 
+            this.BookPreview_BookThumbnail.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.BookPreview_BookThumbnail.Author = "";
+            this.BookPreview_BookThumbnail.BackColor = System.Drawing.Color.White;
+            this.BookPreview_BookThumbnail.Category = null;
+            this.BookPreview_BookThumbnail.Description = "";
+            this.BookPreview_BookThumbnail.ID = ((uint)(0u));
+            this.BookPreview_BookThumbnail.Location = new System.Drawing.Point(512, 13);
+            this.BookPreview_BookThumbnail.Name = "BookPreview_BookThumbnail";
+            this.BookPreview_BookThumbnail.QuantityAvailable = ((uint)(0u));
+            this.BookPreview_BookThumbnail.Size = new System.Drawing.Size(326, 150);
+            this.BookPreview_BookThumbnail.TabIndex = 1;
+            this.BookPreview_BookThumbnail.Thumbnail = ((System.Drawing.Bitmap)(resources.GetObject("BookPreview_BookThumbnail.Thumbnail")));
+            this.BookPreview_BookThumbnail.Title = "";
+            this.BookPreview_BookThumbnail.DetailsButtonClicked += new System.EventHandler<BookKeeper.Book>(this.Thumbnail_DetailsButtonClicked);
+            // 
             // Loans_ListView
             // 
             this.Loans_ListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
@@ -366,14 +405,16 @@ namespace BookKeeper
             this.LoanerName_ColumnHeader,
             this.LoanDate_ColumnHeader,
             this.ReturnDate_ColumnHeader});
-            this.Loans_ListView.HoverSelection = true;
+            this.Loans_ListView.FullRowSelect = true;
+            this.Loans_ListView.GridLines = true;
             this.Loans_ListView.Location = new System.Drawing.Point(8, 13);
             this.Loans_ListView.Name = "Loans_ListView";
-            this.Loans_ListView.Size = new System.Drawing.Size(469, 201);
+            this.Loans_ListView.Size = new System.Drawing.Size(498, 201);
             this.Loans_ListView.TabIndex = 0;
             this.Loans_ListView.UseCompatibleStateImageBehavior = false;
             this.Loans_ListView.View = System.Windows.Forms.View.Details;
             this.Loans_ListView.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.Loans_ListView_ColumnClick);
+            this.Loans_ListView.SelectedIndexChanged += new System.EventHandler(this.Loans_ListView_SelectedIndexChanged);
             // 
             // BookID_ColumnHeader
             // 
@@ -413,21 +454,19 @@ namespace BookKeeper
             this.ClientSize = new System.Drawing.Size(854, 461);
             this.Controls.Add(this.StatusLabel);
             this.Controls.Add(this.MainTabControl);
-            this.Controls.Add(this.menuStrip1);
+            this.Controls.Add(this.MainMenuStrip);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "BookKeeper - Dashboard";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainWindow_FormClosing);
             this.Resize += new System.EventHandler(this.MainWindow_Resize);
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
+            this.MainMenuStrip.ResumeLayout(false);
+            this.MainMenuStrip.PerformLayout();
             this.MainTabControl.ResumeLayout(false);
             this.Dashboard_TabPage.ResumeLayout(false);
             this.Dashboard_TabPage.PerformLayout();
             this.Loans_TabPage.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -435,17 +474,17 @@ namespace BookKeeper
 
         #endregion
 
-        private System.Windows.Forms.MenuStrip menuStrip1;
+#pragma warning disable CS0108 // Member hides inherited member; missing new keyword
+        private System.Windows.Forms.MenuStrip MainMenuStrip;
+#pragma warning restore CS0108 // Member hides inherited member; missing new keyword
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem NewLoan_MenuItem;
         private System.Windows.Forms.ToolStripMenuItem Settings_MenuItem;
         private System.Windows.Forms.ToolStripMenuItem Exit_MenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem About_MenuItem;
-        private System.Windows.Forms.BindingSource bindingSource1;
         private System.Windows.Forms.ToolStripMenuItem NewBookLoan_MenuItem;
         private System.Windows.Forms.ToolStripMenuItem NewBook_MenuItem;
-        private System.Windows.Forms.ToolStripMenuItem Shortcuts_MenuItem;
         private System.Windows.Forms.TabControl MainTabControl;
         private System.Windows.Forms.TabPage Dashboard_TabPage;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
@@ -470,6 +509,9 @@ namespace BookKeeper
         private ColumnHeader LoanerName_ColumnHeader;
         private ColumnHeader LoanDate_ColumnHeader;
         private ColumnHeader ReturnDate_ColumnHeader;
+        private BookThumbnail BookPreview_BookThumbnail;
+        private Button ReturnBook_Button;
+        private Button LendBook_Button;
     }
 }
 

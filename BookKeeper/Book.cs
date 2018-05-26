@@ -8,7 +8,8 @@ using Utilities;
 
 namespace BookKeeper
 {
-    public class Book
+    [Serializable]
+    public class Book : IComparable<Book>, ICloneable
     {
         /// <summary>
         /// Creates a new instance of the Book class.
@@ -107,5 +108,24 @@ namespace BookKeeper
         /// Gets or sets the ID of the book.
         /// </summary>
         public UInt32 ID { get; set; }
+
+        public int CompareTo(Book other)
+        {
+            return ID.CompareTo(other.ID);
+        }
+
+        public object Clone()
+        {
+            return new Book()
+            {
+                Title = this.Title,
+                Author = this.Author,
+                Category = this.Category,
+                Description = this.Description,
+                ID = this.ID,
+                Image = this.Image,
+                QuantityAvailable = this.QuantityAvailable
+            };
+        }
     }
 }

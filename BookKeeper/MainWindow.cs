@@ -12,6 +12,7 @@ using Utilities;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Threading;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace BookKeeper
 {
@@ -24,6 +25,24 @@ namespace BookKeeper
         {
             InitializeComponent();
             InitializeDirectories();
+            MenuItem closeThisOneMenuItem = new MenuItem() { Text = "Close this tab", Enabled = false };
+            //TODO: fix runtime error
+            closeThisOneMenuItem.Click += (cmiSender, cmiE) =>
+            {
+                MainTabControl.Controls.RemoveAt(SelectedTabIndex);
+            };
+            MainContextMenu.MenuItems.Add(closeThisOneMenuItem);
+            MenuItem closeAllMenuItem = new MenuItem() { Text = "Close all tabs", Enabled = false };
+            closeAllMenuItem.Tag = MainTabControl.Controls.Count;
+            closeAllMenuItem.Click += (cmiSender, cmiE) =>
+            {
+                while (MainTabControl.Controls.Count > 2)
+                {
+                    MainTabControl.Controls.RemoveAt(2);
+                }
+            };
+            MainContextMenu.MenuItems.Add(closeAllMenuItem);
+            MainTabControl.ContextMenu = MainContextMenu;
             SortByAuthor_RadioButton.Tag = Database.SortParameter.Author;
             SortByAuthor_RadioButton.CheckedChanged += Sort_RadioButton_CheckedChanged;
             SortByCategory_RadioButton.Tag = Database.SortParameter.Category;
@@ -40,7 +59,7 @@ namespace BookKeeper
 
         #endregion
 
-        #region Variables
+        #region Properties
 
         private readonly string[] AppDirectories = { "Data", "Cache" };
         private Random random = new Random();
@@ -59,6 +78,9 @@ namespace BookKeeper
         private List<BookLoan> BookLoans { get; set; } = new List<BookLoan>();
         private ListSortDirection BookLoans_SortDirection { get; set; } = ListSortDirection.Descending;
         private int BookLoans_LastColumnIndex { get; set; } = 0;
+        private ContextMenu MainContextMenu { get; set; } = new ContextMenu();
+        private int SelectedTabIndex { get { return MainTabControl.SelectedIndex; } }
+        private enum MainPanelRefreshMode { FromDatabase, Deserialization };
 
         #endregion
 
@@ -76,7 +98,7 @@ namespace BookKeeper
 
         private async void SetupAsync()
         {
-            await RefreshMainPanelAsync();
+            await RefreshMainPanelAsync((File.Exists("Data/books.bin")) ? MainPanelRefreshMode.Deserialization : MainPanelRefreshMode.FromDatabase);
             await RefreshLoansListViewAsync();
         }
 
@@ -88,13 +110,15 @@ namespace BookKeeper
             {
                 Loans_ListView.Items.Add(bookLoan.ToListViewItem());
             }
+            if (Loans_ListView.Items.Count > 0)
+                Loans_ListView.Items[0].Selected = true;
         }
 
         /// <summary>
         /// Refreshes the list of books from the database and updates the main panel asynchronously. The task can be canceled by using the RefreshCancellationToken CancellationToken."
         /// </summary>
         /// <returns></returns>
-        private async Task RefreshMainPanelAsync()
+        private async Task RefreshMainPanelAsync(MainPanelRefreshMode refreshMode = MainPanelRefreshMode.FromDatabase)
         {
             if (Database.Exists)
             {
@@ -107,7 +131,7 @@ namespace BookKeeper
                         {
                             StatusLabel.Text = "Ready";
                         });
-                        Books = await Database.GetAllBooksAsync(_SortParameter, Database.SortDirection.Asc);
+                        Books = (refreshMode == MainPanelRefreshMode.FromDatabase) ? await Database.GetAllBooksAsync(_SortParameter, Database.SortDirection.Asc) : DeserializeBooks();
                         int xIndex = 0;
                         int yIndex = 0;
                         int perRow = previousPerRow = 0;
@@ -163,10 +187,22 @@ namespace BookKeeper
 
         private void Thumbnail_DetailsButtonClicked(object sender, Book e)
         {
+            string title = (e.Title.Length >= 20) ? e.Title.Substring(0, 17) + "..." : e.Title;
+            for (int i = 0; i < MainTabControl.Controls.Count; i++)
+            {
+                if (MainTabControl.Controls[i].Text == title)
+                {
+                    MainTabControl.SelectedIndex = i;
+                    return;
+                }
+            }
             TabPage tabPage = new TabPage();
-            tabPage.Text = e.Title;
-            MessageBox.Show("OK");
+            tabPage.Text = title;
+            BookDetailsDialog detailsDialog = new BookDetailsDialog(e, BookLoans.Where(o => o.BookID == e.ID).ToList());
+            tabPage.Controls.Add(detailsDialog);
+            detailsDialog.Anchor = tabPage.Anchor = (AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left);
             MainTabControl.Controls.Add(tabPage);
+            MainTabControl.SelectedIndex = MainTabControl.Controls.Count - 1;
         }
 
         private void MainWindow_Resize(object sender, EventArgs e)
@@ -201,21 +237,21 @@ namespace BookKeeper
             {
                 SearchActive = true;
                 SearchCancellationToken = CancellationToken.None;
-                await Task.Run(async() =>
+                await Task.Run(async () =>
                 {
                     bool numerical = false;
                     if (uint.TryParse(s, out uint demoUint)) numerical = true;
                     s = s.FormatForSearch();
-                    List<BookThumbnail> currentBookThumbnails = (numerical)?BookThumbnails.Where(o => o.QuantityAvailable == Convert.ToUInt32(s) || o.ID.ToString().Contains(s)).ToList(): BookThumbnails.Where(o => o.Title.FormatForSearch().Contains(s) || o.Author.FormatForSearch().Contains(s) || o.Description.FormatForSearch().Contains(s)).ToList();
-                   // if (currentBookThumbnails.Count == BookThumbnails.Count) return;
-                    await UIDispatcher.InvokeAsync(() => { MainPanel.Controls.Clear(); });
+                    List<BookThumbnail> currentBookThumbnails = (numerical) ? BookThumbnails.Where(o => o.QuantityAvailable == Convert.ToUInt32(s) || o.ID.ToString().Contains(s)).ToList() : BookThumbnails.Where(o => o.Title.FormatForSearch().Contains(s) || o.Author.FormatForSearch().Contains(s) || o.Description.FormatForSearch().Contains(s)).ToList();
+                    // if (currentBookThumbnails.Count == BookThumbnails.Count) return;
+                    await UIDispatcher.InvokeAsync(() => { MainPanel.Controls.Clear(); }, DispatcherPriority.Render, SearchCancellationToken);
                     int xIndex = 0;
                     int yIndex = 0;
                     int perRow = previousPerRow = 0;
-                    await UIDispatcher.InvokeAsync(() => 
+                    await UIDispatcher.InvokeAsync(() =>
                     {
                         perRow = previousPerRow = MainPanel.Width / (ThumbnailSpacing + ThumbnailWidth);
-                    });
+                    }, DispatcherPriority.Render, SearchCancellationToken);
                     foreach (BookThumbnail thumbnail in currentBookThumbnails)
                     {
                         await UIDispatcher.InvokeAsync(() =>
@@ -223,14 +259,14 @@ namespace BookKeeper
                             MainPanel.Controls.Add(thumbnail);
                             thumbnail.Top = yIndex * (ThumbnailHeight + ThumbnailSpacing);
                             thumbnail.Left = xIndex * (ThumbnailWidth + ThumbnailSpacing);
-                        });
+                        }, DispatcherPriority.Render, SearchCancellationToken);
                         if (++xIndex >= perRow)
                         {
                             xIndex = 0;
                             yIndex++;
                         }
                     }
-                    await UIDispatcher.InvokeAsync(() => { StatusLabel.Text = MainPanel.Controls.Count + " items"; });
+                    await UIDispatcher.InvokeAsync(() => { StatusLabel.Text = MainPanel.Controls.Count + " items"; }, DispatcherPriority.Render, SearchCancellationToken);
                 }, SearchCancellationToken);
             }
             catch
@@ -243,7 +279,7 @@ namespace BookKeeper
                 SearchActive = false;
             }
         }
-        
+
         #endregion
 
         #region Input handling
@@ -271,6 +307,7 @@ namespace BookKeeper
             {
                 e.Cancel = true;
             }
+            SerializeBooks();
         }
 
         private void Exit_MenuItem_Click(object sender, EventArgs e)
@@ -280,7 +317,10 @@ namespace BookKeeper
 
         private void About_MenuItem_Click(object sender, EventArgs e)
         {
-            (new About()).Show();
+            About about = new About();
+            About_MenuItem.Enabled = false;
+            about.FormClosed += (a, b) => { About_MenuItem.Enabled = true; };
+            about.Show();
         }
 
         #endregion
@@ -292,7 +332,25 @@ namespace BookKeeper
         /// <param name="e"></param>
         private void MainTabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
-            this.Text = "BookKeeper - " + (sender as TabControl).SelectedTab.Text;
+            this.Text = "BookKeeper - " + MainTabControl.SelectedTab.Text;
+            if (SelectedTabIndex < 2 && (MainTabControl.Controls.Count == 2))
+            {
+                foreach (MenuItem menuItem in MainContextMenu.MenuItems)
+                {
+                    menuItem.Enabled = false;
+                }
+            }
+            else if (SelectedTabIndex < 2)
+            {
+                MainContextMenu.MenuItems[0].Enabled = false;
+            }
+            else
+            {
+                foreach (MenuItem menuItem in MainContextMenu.MenuItems)
+                {
+                    menuItem.Enabled = true;
+                }
+            }
         }
 
         private void Loans_ListView_ColumnClick(object sender, ColumnClickEventArgs e)
@@ -353,44 +411,16 @@ namespace BookKeeper
             Search_TextBox.Text = string.Empty;
         }
 
-
-        [LengthCanBeImproved]
         private void NewBook_MenuItem_Click(object sender, EventArgs e)
         {
-
-            ContextMenu contextMenu = new ContextMenu();
-
             TabPage newBookPage = new TabPage()
             {
                 Text = "New book",
                 BackColor = Color.White,
-                ContextMenu = contextMenu,
                 Tag = MainTabControl.Controls.Count
             };
-
-            MenuItem closeThisOneMenuItem = new MenuItem() { Text = "Close this tab" };
-            closeThisOneMenuItem.Tag = MainTabControl.Controls.Count;
-            closeThisOneMenuItem.Click += (cmiSender, cmiE) =>
-            {
-                MainTabControl.SelectedIndex = (int)(cmiSender as MenuItem).Tag - 1;
-                MainTabControl.Controls.RemoveAt((int)(cmiSender as MenuItem).Tag);
-            };
-            contextMenu.MenuItems.Add(closeThisOneMenuItem);
-
-            MenuItem closeAllMenuItem = new MenuItem() { Text = "Close all tabs" };
-            closeAllMenuItem.Tag = MainTabControl.Controls.Count;
-            closeAllMenuItem.Click += (cmiSender, cmiE) =>
-            {
-                while (MainTabControl.Controls.Count > 2)
-                {
-                    MainTabControl.Controls.RemoveAt(2);
-                }
-            };
-            contextMenu.MenuItems.Add(closeAllMenuItem);
-
             BookAddDialog newBookControl = new BookAddDialog();
             newBookPage.Controls.Add(newBookControl);
-
             MainTabControl.Controls.Add(newBookPage);
             MainTabControl.SelectedIndex = MainTabControl.Controls.Count - 1;
         }
@@ -400,53 +430,103 @@ namespace BookKeeper
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        [LengthCanBeImproved]
         private void NewBookLoan_MenuItem_Click(object sender, EventArgs e)
         {
-            ContextMenu contextMenu = new ContextMenu();
+            MainTabControl.SelectedIndex = 1;
+            //TODO
+        }
 
-            TabPage newBookLoanPage = new TabPage()
+        private void SerializeBooks()
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            using (FileStream fileStream = File.Create("Data/books.bin"))
             {
-                Text = "New book loan",
-                BackColor = Color.White,
-                ContextMenu = contextMenu,
-                Tag = MainTabControl.Controls.Count
-            };
+                formatter.Serialize(fileStream, Books);
+            }
+        }
 
-            MenuItem closeThisOneMenuItem = new MenuItem() { Text = "Close this tab" };
-            closeThisOneMenuItem.Tag = MainTabControl.Controls.Count;
-            closeThisOneMenuItem.Click += (cmiSender, cmiE) =>
+        private List<Book> DeserializeBooks()
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            if (File.Exists("Data/books.bin"))
             {
-                MainTabControl.SelectedIndex = (int)(cmiSender as MenuItem).Tag - 1;
-                MainTabControl.Controls.RemoveAt((int)(cmiSender as MenuItem).Tag);
-            };
-            contextMenu.MenuItems.Add(closeThisOneMenuItem);
-
-            MenuItem closeAllMenuItem = new MenuItem() { Text = "Close all tabs" };
-            closeAllMenuItem.Tag = MainTabControl.Controls.Count;
-            closeAllMenuItem.Click += (cmiSender, cmiE) =>
-            {
-                while (MainTabControl.Controls.Count > 2)
+                using (FileStream fileStream = File.OpenRead("Data/books.bin"))
                 {
-                    MainTabControl.Controls.RemoveAt(2);
+                    return (List<Book>)formatter.Deserialize(fileStream);
                 }
-            };
-            contextMenu.MenuItems.Add(closeAllMenuItem);
-            /*
-            MenuItem closeAllExceptMenuItem = new MenuItem() { Text = "Close all tabs except this one" };
-            closeAllExceptMenuItem.Tag = MainTabControl.Controls.Count;
-            closeAllExceptMenuItem.Click += (cmiSender, cmiE) =>
+            }
+            else
             {
-                for (int i = 1; i < MainTabControl.Controls.Count; i++)
-                {
-                    if (i == (int)(cmiSender as MenuItem).Tag) continue;
-                    MainTabControl.Controls.RemoveAt(i);
-                }
-            };
-            contextMenu.MenuItems.Add(closeAllExceptMenuItem);*/
+                throw new FileNotFoundException("\"Data/books.bin\" does not exist!");
+            }
+        }
 
-            MainTabControl.Controls.Add(newBookLoanPage);
-            MainTabControl.SelectedIndex = MainTabControl.Controls.Count - 1;
+        private void Loans_ListView_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (Loans_ListView.SelectedIndices.Count == 0) return;
+            List<Book> selectedBooks = Books.Where(o => o.ID == BookLoans[Loans_ListView.SelectedIndices[0]].BookID).ToList();
+            if (selectedBooks.Count == 1)
+            {
+                var selectedBook = selectedBooks[0];
+                BookPreview_BookThumbnail.Title = selectedBook.Title;
+                BookPreview_BookThumbnail.ID = selectedBook.ID;
+                BookPreview_BookThumbnail.Description = selectedBook.Description;
+                BookPreview_BookThumbnail.QuantityAvailable = selectedBook.QuantityAvailable;
+                BookPreview_BookThumbnail.Thumbnail = selectedBook.Image;
+                ReturnBook_Button.Enabled = BookLoans.Where(o=>o.BookID == selectedBook.ID).ToList().Count > 0;
+                LendBook_Button.Enabled = selectedBook.QuantityAvailable > 0;
+            }
+        }
+
+        //TODO:return book
+        async private void ReturnBook_Button_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                ReturnBook_Button.Enabled = false;
+               // await Database.R
+            }
+            finally
+            {
+                ReturnBook_Button.Enabled = true;
+            }
+        }
+
+        private void LendBook_Button_Click(object sender, EventArgs e)
+        {
+            List<Book> selectedBooks = Books.Where(o => o.ID == BookLoans[Loans_ListView.SelectedIndices[0]].BookID).ToList();
+            if (selectedBooks.Count == 1)
+            {
+                var selectedBook = selectedBooks[0];
+                LendBookDialog lendBookDialog = new LendBookDialog(selectedBook.ID);
+                lendBookDialog.Text = "Lend \"" + selectedBook.Title + "\"";
+                lendBookDialog.FormClosing += LendBookDialog_FormClosing;
+                lendBookDialog.Save += LendBookDialog_Save;
+                lendBookDialog.StartPosition = FormStartPosition.CenterScreen;
+                lendBookDialog.TopMost = true;
+                lendBookDialog.Show();
+                LendBook_Button.Enabled = false;
+            }
+        }
+
+        async private void LendBookDialog_Save(object sender, BookLoan e)
+        {
+            LendBook_Button.Enabled = false;
+            try
+            {
+                await Database.AddBookLoanAsync(e);
+                await RefreshMainPanelAsync(MainPanelRefreshMode.FromDatabase);
+                await RefreshLoansListViewAsync();
+            }
+            finally
+            {
+                LendBook_Button.Enabled = true;
+            }
+        }
+
+        private void LendBookDialog_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            LendBook_Button.Enabled = true;
         }
 
         #endregion

@@ -169,7 +169,7 @@ namespace BookKeeper
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show("An error occured while getting data from Book Depository. Please check your internet settings and proxy/firewall settings.");
                 ex.Log();
             }
             finally

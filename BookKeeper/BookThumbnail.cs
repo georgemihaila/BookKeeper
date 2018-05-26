@@ -12,13 +12,13 @@ namespace BookKeeper
 {
     public partial class BookThumbnail : UserControl
     {
-        [NotWorkingCorrectly]
         public BookThumbnail()
         {
             InitializeComponent();
             Details_Button.Click += (sender, e) => DetailsButtonClicked(sender, (Book)this);
             DetailsButton_InitialX = 107;
             Details_Button.Left = -135;
+            QuantityAvailable_Label.Text = string.Empty;
         }
 
         public BookThumbnail(string title, string author, string category, string description, uint quantity) : this()
@@ -52,7 +52,7 @@ namespace BookKeeper
         /// <summary>
         /// Gets the book ID.
         /// </summary>
-        public uint ID { get; private set; }
+        public uint ID { get; set; }
 
         /// <summary>
         /// Gets or sets the title field of the control.
@@ -142,15 +142,15 @@ namespace BookKeeper
         public event EventHandler<Book> DetailsButtonClicked;
         protected virtual void OnDetailsButtonClicked(Book e) => DetailsButtonClicked?.Invoke(this, e);
 
+        //Clicking the details button doesn't invoke the event.
+        [NotWorkingCorrectly]
         private void BookThumbnail_Click(object sender, EventArgs e)
         {
-
+            DetailsButtonClicked(sender, (Book)this);
         }
 
         private void OnMouseOver()
         {
-            this.BackColor = (QuantityAvailable > 0) ? Color.Green : Color.Red;
-            QuantityAvailable_Label.ForeColor = (QuantityAvailable > 0) ? Color.Black : Color.White;
             Details_Button.Left = 107;
             Description_Label.Text = String.Empty;
             QuantityAvailable_Label.Text = String.Empty;
@@ -158,8 +158,6 @@ namespace BookKeeper
 
         private void OnMouseLeave()
         {
-            this.BackColor = Color.White;
-            QuantityAvailable_Label.ForeColor = (QuantityAvailable > 0) ? Color.Black : Color.Red;
             Details_Button.Left = -135;
             Description_Label.Text = Description;
             QuantityAvailable_Label.Text = "Available: " + QuantityAvailable;
