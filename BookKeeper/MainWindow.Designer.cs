@@ -46,18 +46,15 @@ namespace BookKeeper
             this.MainTabControl = new System.Windows.Forms.TabControl();
             this.Dashboard_TabPage = new System.Windows.Forms.TabPage();
             this.ClearSearch_Button = new System.Windows.Forms.Button();
-            this.SortByID_RadioButton = new System.Windows.Forms.RadioButton();
-            this.SortByQtyAvailable_RadioButton = new System.Windows.Forms.RadioButton();
-            this.SortByCategory_RadioButton = new System.Windows.Forms.RadioButton();
-            this.SortByAuthor_RadioButton = new System.Windows.Forms.RadioButton();
-            this.SortByTitle_RadioButton = new System.Windows.Forms.RadioButton();
-            this.label3 = new System.Windows.Forms.Label();
             this.Refresh_Button = new System.Windows.Forms.Button();
             this.MainPanel = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
             this.Search_TextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.Loans_TabPage = new System.Windows.Forms.TabPage();
+            this.ClearLoansSearchBox_Button = new System.Windows.Forms.Button();
+            this.LoansSearch_TextBox = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.LendBook_Button = new System.Windows.Forms.Button();
             this.ReturnBook_Button = new System.Windows.Forms.Button();
             this.BookPreview_BookThumbnail = new BookKeeper.BookThumbnail();
@@ -175,7 +172,7 @@ namespace BookKeeper
             // 
             this.About_MenuItem.Image = ((System.Drawing.Image)(resources.GetObject("About_MenuItem.Image")));
             this.About_MenuItem.Name = "About_MenuItem";
-            this.About_MenuItem.Size = new System.Drawing.Size(180, 22);
+            this.About_MenuItem.Size = new System.Drawing.Size(173, 22);
             this.About_MenuItem.Text = "About BookKeeper";
             this.About_MenuItem.Click += new System.EventHandler(this.About_MenuItem_Click);
             // 
@@ -196,12 +193,6 @@ namespace BookKeeper
             // Dashboard_TabPage
             // 
             this.Dashboard_TabPage.Controls.Add(this.ClearSearch_Button);
-            this.Dashboard_TabPage.Controls.Add(this.SortByID_RadioButton);
-            this.Dashboard_TabPage.Controls.Add(this.SortByQtyAvailable_RadioButton);
-            this.Dashboard_TabPage.Controls.Add(this.SortByCategory_RadioButton);
-            this.Dashboard_TabPage.Controls.Add(this.SortByAuthor_RadioButton);
-            this.Dashboard_TabPage.Controls.Add(this.SortByTitle_RadioButton);
-            this.Dashboard_TabPage.Controls.Add(this.label3);
             this.Dashboard_TabPage.Controls.Add(this.Refresh_Button);
             this.Dashboard_TabPage.Controls.Add(this.MainPanel);
             this.Dashboard_TabPage.Controls.Add(this.label2);
@@ -228,67 +219,6 @@ namespace BookKeeper
             this.ClearSearch_Button.Text = "x";
             this.ClearSearch_Button.UseVisualStyleBackColor = false;
             this.ClearSearch_Button.Click += new System.EventHandler(this.ClearSearch_Button_Click);
-            // 
-            // SortByID_RadioButton
-            // 
-            this.SortByID_RadioButton.AutoSize = true;
-            this.SortByID_RadioButton.Location = new System.Drawing.Point(589, 29);
-            this.SortByID_RadioButton.Name = "SortByID_RadioButton";
-            this.SortByID_RadioButton.Size = new System.Drawing.Size(36, 17);
-            this.SortByID_RadioButton.TabIndex = 10;
-            this.SortByID_RadioButton.Text = "ID";
-            this.SortByID_RadioButton.UseVisualStyleBackColor = true;
-            // 
-            // SortByQtyAvailable_RadioButton
-            // 
-            this.SortByQtyAvailable_RadioButton.AutoSize = true;
-            this.SortByQtyAvailable_RadioButton.Location = new System.Drawing.Point(494, 30);
-            this.SortByQtyAvailable_RadioButton.Name = "SortByQtyAvailable_RadioButton";
-            this.SortByQtyAvailable_RadioButton.Size = new System.Drawing.Size(89, 17);
-            this.SortByQtyAvailable_RadioButton.TabIndex = 9;
-            this.SortByQtyAvailable_RadioButton.Text = "Qty. available";
-            this.SortByQtyAvailable_RadioButton.UseVisualStyleBackColor = true;
-            // 
-            // SortByCategory_RadioButton
-            // 
-            this.SortByCategory_RadioButton.AutoSize = true;
-            this.SortByCategory_RadioButton.Location = new System.Drawing.Point(421, 30);
-            this.SortByCategory_RadioButton.Name = "SortByCategory_RadioButton";
-            this.SortByCategory_RadioButton.Size = new System.Drawing.Size(67, 17);
-            this.SortByCategory_RadioButton.TabIndex = 8;
-            this.SortByCategory_RadioButton.Text = "Category";
-            this.SortByCategory_RadioButton.UseVisualStyleBackColor = true;
-            // 
-            // SortByAuthor_RadioButton
-            // 
-            this.SortByAuthor_RadioButton.AutoSize = true;
-            this.SortByAuthor_RadioButton.Location = new System.Drawing.Point(359, 30);
-            this.SortByAuthor_RadioButton.Name = "SortByAuthor_RadioButton";
-            this.SortByAuthor_RadioButton.Size = new System.Drawing.Size(56, 17);
-            this.SortByAuthor_RadioButton.TabIndex = 7;
-            this.SortByAuthor_RadioButton.Text = "Author";
-            this.SortByAuthor_RadioButton.UseVisualStyleBackColor = true;
-            // 
-            // SortByTitle_RadioButton
-            // 
-            this.SortByTitle_RadioButton.AutoSize = true;
-            this.SortByTitle_RadioButton.Checked = true;
-            this.SortByTitle_RadioButton.Location = new System.Drawing.Point(308, 30);
-            this.SortByTitle_RadioButton.Name = "SortByTitle_RadioButton";
-            this.SortByTitle_RadioButton.Size = new System.Drawing.Size(45, 17);
-            this.SortByTitle_RadioButton.TabIndex = 6;
-            this.SortByTitle_RadioButton.TabStop = true;
-            this.SortByTitle_RadioButton.Text = "Title";
-            this.SortByTitle_RadioButton.UseVisualStyleBackColor = true;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(253, 32);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(53, 13);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "Group by:";
             // 
             // Refresh_Button
             // 
@@ -342,6 +272,9 @@ namespace BookKeeper
             // 
             // Loans_TabPage
             // 
+            this.Loans_TabPage.Controls.Add(this.ClearLoansSearchBox_Button);
+            this.Loans_TabPage.Controls.Add(this.LoansSearch_TextBox);
+            this.Loans_TabPage.Controls.Add(this.label4);
             this.Loans_TabPage.Controls.Add(this.LendBook_Button);
             this.Loans_TabPage.Controls.Add(this.ReturnBook_Button);
             this.Loans_TabPage.Controls.Add(this.BookPreview_BookThumbnail);
@@ -352,6 +285,37 @@ namespace BookKeeper
             this.Loans_TabPage.TabIndex = 1;
             this.Loans_TabPage.Text = "Loans";
             this.Loans_TabPage.UseVisualStyleBackColor = true;
+            // 
+            // ClearLoansSearchBox_Button
+            // 
+            this.ClearLoansSearchBox_Button.BackColor = System.Drawing.Color.Transparent;
+            this.ClearLoansSearchBox_Button.FlatAppearance.BorderSize = 0;
+            this.ClearLoansSearchBox_Button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ClearLoansSearchBox_Button.Location = new System.Drawing.Point(223, 26);
+            this.ClearLoansSearchBox_Button.Name = "ClearLoansSearchBox_Button";
+            this.ClearLoansSearchBox_Button.Size = new System.Drawing.Size(24, 23);
+            this.ClearLoansSearchBox_Button.TabIndex = 12;
+            this.ClearLoansSearchBox_Button.TabStop = false;
+            this.ClearLoansSearchBox_Button.Text = "x";
+            this.ClearLoansSearchBox_Button.UseVisualStyleBackColor = false;
+            this.ClearLoansSearchBox_Button.Click += new System.EventHandler(this.ClearLoansSearchBox_Button_Click);
+            // 
+            // LoansSearch_TextBox
+            // 
+            this.LoansSearch_TextBox.Location = new System.Drawing.Point(11, 29);
+            this.LoansSearch_TextBox.Name = "LoansSearch_TextBox";
+            this.LoansSearch_TextBox.Size = new System.Drawing.Size(206, 20);
+            this.LoansSearch_TextBox.TabIndex = 5;
+            this.LoansSearch_TextBox.TextChanged += new System.EventHandler(this.LoansSearch_TextBox_TextChanged);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(8, 13);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(41, 13);
+            this.label4.TabIndex = 4;
+            this.label4.Text = "Search";
             // 
             // LendBook_Button
             // 
@@ -368,7 +332,6 @@ namespace BookKeeper
             // 
             // ReturnBook_Button
             // 
-            this.ReturnBook_Button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.ReturnBook_Button.BackColor = System.Drawing.Color.YellowGreen;
             this.ReturnBook_Button.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ReturnBook_Button.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -383,7 +346,6 @@ namespace BookKeeper
             // 
             // BookPreview_BookThumbnail
             // 
-            this.BookPreview_BookThumbnail.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.BookPreview_BookThumbnail.Author = "";
             this.BookPreview_BookThumbnail.BackColor = System.Drawing.Color.White;
             this.BookPreview_BookThumbnail.Category = null;
@@ -407,7 +369,7 @@ namespace BookKeeper
             this.ReturnDate_ColumnHeader});
             this.Loans_ListView.FullRowSelect = true;
             this.Loans_ListView.GridLines = true;
-            this.Loans_ListView.Location = new System.Drawing.Point(8, 13);
+            this.Loans_ListView.Location = new System.Drawing.Point(11, 55);
             this.Loans_ListView.Name = "Loans_ListView";
             this.Loans_ListView.Size = new System.Drawing.Size(498, 201);
             this.Loans_ListView.TabIndex = 0;
@@ -467,6 +429,7 @@ namespace BookKeeper
             this.Dashboard_TabPage.ResumeLayout(false);
             this.Dashboard_TabPage.PerformLayout();
             this.Loans_TabPage.ResumeLayout(false);
+            this.Loans_TabPage.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -496,12 +459,6 @@ namespace BookKeeper
         private System.Windows.Forms.Panel MainPanel;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button Refresh_Button;
-        private System.Windows.Forms.RadioButton SortByID_RadioButton;
-        private System.Windows.Forms.RadioButton SortByQtyAvailable_RadioButton;
-        private System.Windows.Forms.RadioButton SortByCategory_RadioButton;
-        private System.Windows.Forms.RadioButton SortByAuthor_RadioButton;
-        private System.Windows.Forms.RadioButton SortByTitle_RadioButton;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TabPage Loans_TabPage;
         private System.Windows.Forms.Button ClearSearch_Button;
         private ListView Loans_ListView;
@@ -512,6 +469,9 @@ namespace BookKeeper
         private BookThumbnail BookPreview_BookThumbnail;
         private Button ReturnBook_Button;
         private Button LendBook_Button;
+        private TextBox LoansSearch_TextBox;
+        private Label label4;
+        private Button ClearLoansSearchBox_Button;
     }
 }
 

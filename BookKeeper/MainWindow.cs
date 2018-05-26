@@ -26,7 +26,6 @@ namespace BookKeeper
             InitializeComponent();
             InitializeDirectories();
             MenuItem closeThisOneMenuItem = new MenuItem() { Text = "Close this tab", Enabled = false };
-            //TODO: fix runtime error
             closeThisOneMenuItem.Click += (cmiSender, cmiE) =>
             {
                 MainTabControl.Controls.RemoveAt(SelectedTabIndex);
@@ -43,16 +42,6 @@ namespace BookKeeper
             };
             MainContextMenu.MenuItems.Add(closeAllMenuItem);
             MainTabControl.ContextMenu = MainContextMenu;
-            SortByAuthor_RadioButton.Tag = Database.SortParameter.Author;
-            SortByAuthor_RadioButton.CheckedChanged += Sort_RadioButton_CheckedChanged;
-            SortByCategory_RadioButton.Tag = Database.SortParameter.Category;
-            SortByCategory_RadioButton.CheckedChanged += Sort_RadioButton_CheckedChanged;
-            SortByID_RadioButton.Tag = Database.SortParameter.ID;
-            SortByID_RadioButton.CheckedChanged += Sort_RadioButton_CheckedChanged;
-            SortByQtyAvailable_RadioButton.Tag = Database.SortParameter.QuantityAvailable;
-            SortByQtyAvailable_RadioButton.CheckedChanged += Sort_RadioButton_CheckedChanged;
-            SortByTitle_RadioButton.Tag = Database.SortParameter.Title;
-            SortByTitle_RadioButton.CheckedChanged += Sort_RadioButton_CheckedChanged;
             SetupAsync();
         }
 
@@ -266,7 +255,7 @@ namespace BookKeeper
                             yIndex++;
                         }
                     }
-                    await UIDispatcher.InvokeAsync(() => { StatusLabel.Text = MainPanel.Controls.Count + " items"; }, DispatcherPriority.Render, SearchCancellationToken);
+                    await UIDispatcher.InvokeAsync(() => { StatusLabel.Text = MainPanel.Controls.Count + " item" + ((MainPanel.Controls.Count != 1) ? "s" : string.Empty); }, DispatcherPriority.Render, SearchCancellationToken);
                 }, SearchCancellationToken);
             }
             catch
@@ -303,6 +292,9 @@ namespace BookKeeper
 
         private void MainWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
+#if DEBUG
+            return;
+#endif
             if (MessageBox.Show("Are you sure you want to exit?", "Exit", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.No)
             {
                 e.Cancel = true;
@@ -351,32 +343,62 @@ namespace BookKeeper
                     menuItem.Enabled = true;
                 }
             }
+            if (SelectedTabIndex == 0)
+            {
+                StatusLabel.Text = MainPanel.Controls.Count + " item" + ((MainPanel.Controls.Count != 1) ? "s" : string.Empty);
+            }
+            else if (SelectedTabIndex == 1)
+            {
+                StatusLabel.Text = Loans_ListView.Items.Count + " item" + ((Loans_ListView.Items.Count != 1) ? "s" : string.Empty);
+            }
+            else
+            {
+                StatusLabel.Text = string.Empty;
+            }
         }
 
         private void Loans_ListView_ColumnClick(object sender, ColumnClickEventArgs e)
         {
             if (e.Column == BookLoans_LastColumnIndex) BookLoans_SortDirection = (BookLoans_SortDirection == ListSortDirection.Ascending) ? ListSortDirection.Descending : ListSortDirection.Ascending;
             BookLoans_LastColumnIndex = e.Column;
+            if (LoansSearch_TextBox.Text.Trim() == string.Empty)
+            {
+                foreach (BookLoan x in BookLoans)
+                {
+                    Loans_ListView.Items.Add(x.ToListViewItem());
+                }
+            }
+            Loans_ListView.Items.Clear();
+            List<BookLoan> items = new List<BookLoan>();
+            foreach (BookLoan x in BookLoans)
+            {
+                string query = x.BookID + x.LoanDate.ToShortDateString() + x.LoanerName + x.ReturnDate.ToShortDateString();
+                if (query.FormatForSearch().Contains(LoansSearch_TextBox.Text.FormatForSearch()))
+                {
+                    items.Add(x);
+                }
+            }
             switch (e.Column)
             {
                 case 0:
-                    BookLoans = (BookLoans_SortDirection == ListSortDirection.Ascending) ? BookLoans.OrderBy(o => o.BookID).ToList() : BookLoans.OrderByDescending(o => o.BookID).ToList();
+                    items = (BookLoans_SortDirection == ListSortDirection.Ascending) ? items.OrderBy(o => o.BookID).ToList() : items.OrderByDescending(o => o.BookID).ToList();
                     break;
                 case 1:
-                    BookLoans = (BookLoans_SortDirection == ListSortDirection.Ascending) ? BookLoans.OrderBy(o => o.LoanerName).ToList() : BookLoans.OrderByDescending(o => o.LoanerName).ToList();
+                    items = (BookLoans_SortDirection == ListSortDirection.Ascending) ? items.OrderBy(o => o.LoanerName).ToList() : items.OrderByDescending(o => o.LoanerName).ToList();
                     break;
                 case 2:
-                    BookLoans = (BookLoans_SortDirection == ListSortDirection.Ascending) ? BookLoans.OrderBy(o => o.LoanDate).ToList() : BookLoans.OrderByDescending(o => o.LoanDate).ToList();
+                    items = (BookLoans_SortDirection == ListSortDirection.Ascending) ? items.OrderBy(o => o.LoanDate).ToList() : items.OrderByDescending(o => o.LoanDate).ToList();
                     break;
                 case 3:
-                    BookLoans = (BookLoans_SortDirection == ListSortDirection.Ascending) ? BookLoans.OrderBy(o => o.ReturnDate).ToList() : BookLoans.OrderByDescending(o => o.ReturnDate).ToList();
+                    items = (BookLoans_SortDirection == ListSortDirection.Ascending) ? items.OrderBy(o => o.ReturnDate).ToList() : items.OrderByDescending(o => o.ReturnDate).ToList();
                     break;
             }
             Loans_ListView.Items.Clear();
-            foreach (var x in BookLoans)
+            foreach (var x in items)
             {
                 Loans_ListView.Items.Add(x.ToListViewItem());
             }
+            StatusLabel.Text = Loans_ListView.Items.Count + " item" + ((Loans_ListView.Items.Count != 1) ? "s" : string.Empty);
         }
 
         async private void Search_TextBox_TextChanged(object sender, EventArgs e)
@@ -473,7 +495,7 @@ namespace BookKeeper
                 BookPreview_BookThumbnail.Description = selectedBook.Description;
                 BookPreview_BookThumbnail.QuantityAvailable = selectedBook.QuantityAvailable;
                 BookPreview_BookThumbnail.Thumbnail = selectedBook.Image;
-                ReturnBook_Button.Enabled = BookLoans.Where(o=>o.BookID == selectedBook.ID).ToList().Count > 0;
+                ReturnBook_Button.Enabled = BookLoans.Where(o => o.BookID == selectedBook.ID).ToList().Count > 0;
                 LendBook_Button.Enabled = selectedBook.QuantityAvailable > 0;
             }
         }
@@ -484,7 +506,7 @@ namespace BookKeeper
             try
             {
                 ReturnBook_Button.Enabled = false;
-               // await Database.R
+                // await Database.R
             }
             finally
             {
@@ -527,6 +549,32 @@ namespace BookKeeper
         private void LendBookDialog_FormClosing(object sender, FormClosingEventArgs e)
         {
             LendBook_Button.Enabled = true;
+        }
+
+        private void LoansSearch_TextBox_TextChanged(object sender, EventArgs e)
+        {
+            if (LoansSearch_TextBox.Text.Trim() == string.Empty)
+            {
+                foreach (BookLoan x in BookLoans)
+                {
+                    Loans_ListView.Items.Add(x.ToListViewItem());
+                }
+            }
+            Loans_ListView.Items.Clear();
+            foreach (BookLoan x in BookLoans)
+            {
+                string query = x.BookID + x.LoanDate.ToShortDateString() + x.LoanerName + x.ReturnDate.ToShortDateString();
+                if (query.FormatForSearch().Contains(LoansSearch_TextBox.Text.FormatForSearch()))
+                {
+                    Loans_ListView.Items.Add(x.ToListViewItem());
+                }
+            }
+            StatusLabel.Text = Loans_ListView.Items.Count + " item" + ((Loans_ListView.Items.Count != 1) ? "s" : string.Empty);
+        }
+
+        private void ClearLoansSearchBox_Button_Click(object sender, EventArgs e)
+        {
+            LoansSearch_TextBox.Text = string.Empty;
         }
 
         #endregion
