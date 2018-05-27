@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Utilities;
 using System.Net;
+using System.Drawing.Imaging;
 
 namespace BookKeeper
 {
@@ -34,7 +35,23 @@ namespace BookKeeper
 
         private void ChooseImage_Button_Click(object sender, EventArgs e)
         {
-            ImageFileDialog.ShowDialog();
+            ImageFileDialog.Filter = "";
+            ImageCodecInfo[] codecs = ImageCodecInfo.GetImageEncoders();
+            string sep = string.Empty;
+            foreach (var c in codecs)
+            {
+                string codecName = c.CodecName.Substring(8).Replace("Codec", "Files").Trim();
+                ImageFileDialog.Filter = String.Format("{0}{1}{2} ({3})|{3}", ImageFileDialog.Filter, sep, codecName, c.FilenameExtension);
+                sep = "|";
+            }
+            ImageFileDialog.Filter = String.Format("{0}{1}{2} ({3})|{3}", ImageFileDialog.Filter, sep, "All Files", "*.*");
+            ImageFileDialog.DefaultExt = ".png";
+            var result = ImageFileDialog.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                string fileName = ImageFileDialog.FileName;
+                Image_PictureBox.Image = new Bitmap(fileName);
+            }
         }
 
         private void URL_TextBox_TextChanged(object sender, EventArgs e)
@@ -162,7 +179,6 @@ namespace BookKeeper
                 Image_PictureBox.ImageLocation = imageURL;
 
                 //Get category
-                //[NotWorkingCorrectly]
                 HtmlAgilityPack.HtmlNode[] categoryNode =
    document.DocumentNode.Descendants().Where(node => node.Name == "ol").ToArray();
                 Category_TextBox.Text = "Unknown";

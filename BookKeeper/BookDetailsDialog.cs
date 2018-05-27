@@ -73,9 +73,9 @@ namespace BookKeeper
             }
             set
             {
-                LendBook_Button.Enabled = (value > 0);
-                QuantityAvailable_Label.Text = "Quantity available:" + value;
                 _QuantityAvailable = value;
+                LendBook_Button.Enabled = (_QuantityAvailable > 0);
+                QuantityAvailable_Label.Text = "Quantity available: " + _QuantityAvailable;
             }
         }
 
@@ -105,13 +105,13 @@ namespace BookKeeper
             }
             finally
             {
-                LendBook_Button.Enabled = true;
+                LendBook_Button.Enabled = (QuantityAvailable > 0);
             }
         }
 
         private void LendBookDialog_FormClosing(object sender, FormClosingEventArgs e)
         {
-            LendBook_Button.Enabled = true;
+            LendBook_Button.Enabled = (QuantityAvailable > 0);
         }
 
         async private void Return_Buton_Click(object sender, EventArgs e)
@@ -142,7 +142,7 @@ namespace BookKeeper
             }
             finally
             {
-                Return_Button.Enabled = true;
+                Return_Button.Enabled = (Loans.Count > 0);
             }
         }
 

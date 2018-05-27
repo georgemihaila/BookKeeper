@@ -141,9 +141,7 @@ namespace BookKeeper
         /// </summary>
         public event EventHandler<Book> DetailsButtonClicked;
         protected virtual void OnDetailsButtonClicked(Book e) => DetailsButtonClicked?.Invoke(this, e);
-
-        //Clicking the details button doesn't invoke the event.
-        [NotWorkingCorrectly]
+        
         private void BookThumbnail_Click(object sender, EventArgs e)
         {
             DetailsButtonClicked(sender, (Book)this);

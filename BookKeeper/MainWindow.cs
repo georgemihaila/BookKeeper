@@ -413,9 +413,6 @@ namespace BookKeeper
 
         private void MainWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
-#if DEBUG
-            return;
-#endif
             if (MessageBox.Show("Are you sure you want to exit?", "Exit", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.No)
             {
                 e.Cancel = true;
@@ -613,8 +610,7 @@ namespace BookKeeper
                 LendBook_Button.Enabled = selectedBook.QuantityAvailable > 0;
             }
         }
-
-        //TODO:return book
+        
         async private void ReturnBook_Button_Click(object sender, EventArgs e)
         {
             try
