@@ -38,7 +38,7 @@
             this.LoanDate_ColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ReturnDate_ColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Description_Label = new System.Windows.Forms.TextBox();
-            this.Return_Buton = new System.Windows.Forms.Button();
+            this.Return_Button = new System.Windows.Forms.Button();
             this.QuantityAvailable_Label = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.Tumbnail_PicureBox)).BeginInit();
             this.SuspendLayout();
@@ -100,10 +100,11 @@
             this.LentTo_ListView.Location = new System.Drawing.Point(3, 245);
             this.LentTo_ListView.MultiSelect = false;
             this.LentTo_ListView.Name = "LentTo_ListView";
-            this.LentTo_ListView.Size = new System.Drawing.Size(381, 143);
+            this.LentTo_ListView.Size = new System.Drawing.Size(381, 207);
             this.LentTo_ListView.TabIndex = 6;
             this.LentTo_ListView.UseCompatibleStateImageBehavior = false;
             this.LentTo_ListView.View = System.Windows.Forms.View.Details;
+            this.LentTo_ListView.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.LentTo_ListView_ColumnClick);
             // 
             // CurrentLyLentTo_ColumnHeader
             // 
@@ -130,15 +131,15 @@
             this.Description_Label.Size = new System.Drawing.Size(263, 121);
             this.Description_Label.TabIndex = 7;
             // 
-            // Return_Buton
+            // Return_Button
             // 
-            this.Return_Buton.Location = new System.Drawing.Point(3, 197);
-            this.Return_Buton.Name = "Return_Buton";
-            this.Return_Buton.Size = new System.Drawing.Size(109, 23);
-            this.Return_Buton.TabIndex = 8;
-            this.Return_Buton.Text = "Return";
-            this.Return_Buton.UseVisualStyleBackColor = true;
-            this.Return_Buton.Click += new System.EventHandler(this.Return_Buton_Click);
+            this.Return_Button.Location = new System.Drawing.Point(3, 197);
+            this.Return_Button.Name = "Return_Button";
+            this.Return_Button.Size = new System.Drawing.Size(109, 23);
+            this.Return_Button.TabIndex = 8;
+            this.Return_Button.Text = "Return";
+            this.Return_Button.UseVisualStyleBackColor = true;
+            this.Return_Button.Click += new System.EventHandler(this.Return_Buton_Click);
             // 
             // QuantityAvailable_Label
             // 
@@ -154,7 +155,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.QuantityAvailable_Label);
-            this.Controls.Add(this.Return_Buton);
+            this.Controls.Add(this.Return_Button);
             this.Controls.Add(this.Description_Label);
             this.Controls.Add(this.LentTo_ListView);
             this.Controls.Add(this.label1);
@@ -163,7 +164,7 @@
             this.Controls.Add(this.Title_Label);
             this.Controls.Add(this.Tumbnail_PicureBox);
             this.Name = "BookDetailsDialog";
-            this.Size = new System.Drawing.Size(729, 391);
+            this.Size = new System.Drawing.Size(729, 455);
             ((System.ComponentModel.ISupportInitialize)(this.Tumbnail_PicureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -182,7 +183,7 @@
         private System.Windows.Forms.ColumnHeader LoanDate_ColumnHeader;
         private System.Windows.Forms.ColumnHeader ReturnDate_ColumnHeader;
         private System.Windows.Forms.TextBox Description_Label;
-        private System.Windows.Forms.Button Return_Buton;
+        private System.Windows.Forms.Button Return_Button;
         private System.Windows.Forms.Label QuantityAvailable_Label;
     }
 }

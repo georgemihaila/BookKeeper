@@ -99,6 +99,12 @@
     <Compile Include="LendBookDialog.Designer.cs">
       <DependentUpon>LendBookDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="LendBookDialog_Full.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LendBookDialog_Full.Designer.cs">
+      <DependentUpon>LendBookDialog_Full.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -125,6 +131,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="LendBookDialog.resx">
       <DependentUpon>LendBookDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LendBookDialog_Full.resx">
+      <DependentUpon>LendBookDialog_Full.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>
@@ -160,6 +169,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Graphicloads-Colorful-Long-Shadow-Book.ico" />
+    <Content Include="Icons\BoundImageColumn\BoundImageColumn_16x.png" />
+    <Content Include="Icons\BoundImageColumn\BoundImageColumn_16x.svg" />
+    <Content Include="Icons\BoundImageColumn\BoundImageColumn_16x_24.bmp" />
+    <Content Include="Icons\BoundImageColumn\BoundImageColumn_16x_32.bmp" />
+    <Content Include="Icons\Box\Box_16x.png" />
+    <Content Include="Icons\Box\Box_16x.svg" />
+    <Content Include="Icons\Box\Box_16x_24.bmp" />
+    <Content Include="Icons\Box\Box_16x_32.bmp" />
     <Content Include="Icons\Close\Close_12x_16x.png" />
     <Content Include="Icons\Close\Close_12x_16x.svg" />
     <Content Include="Icons\Close\Close_12x_16x_24.bmp" />
@@ -184,6 +201,9 @@
     <Content Include="Icons\Exit\Exit_16x.svg" />
     <Content Include="Icons\Exit\Exit_16x_24.bmp" />
     <Content Include="Icons\Exit\Exit_16x_32.bmp" />
+    <Content Include="Icons\ExportData\ExportData_16x.png" />
+    <Content Include="Icons\ExportData\ExportData_16x_24.bmp" />
+    <Content Include="Icons\ExportData\ExportData_16x_32.bmp" />
     <Content Include="Icons\Info\Info.png" />
     <Content Include="Icons\NewCube\NewCube_16x.png" />
     <Content Include="Icons\NewCube\NewCube_16x.svg" />
@@ -246,10 +266,34 @@
     <Content Include="Icons\Shortcut\Shortcut_cyanOverlay_16x.svg" />
     <Content Include="Icons\Shortcut\Shortcut_cyanOverlay_16x_24.bmp" />
     <Content Include="Icons\Shortcut\Shortcut_cyanOverlay_16x_32.bmp" />
+    <Content Include="Icons\Text\Text_16x.png" />
+    <Content Include="Icons\Text\Text_16x.svg" />
+    <Content Include="Icons\Text\text_16xMD.png" />
+    <Content Include="Icons\Text\text_16xSM.png" />
     <Content Include="Thumbnails\9780062506351.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Icons\BoundImageColumn\BoundImageColumn_16x.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Icons\Box\Box_16x.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Icons\Refresh\Refresh_grey_16xMD.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Icons\Text\Text_16x.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Icons\Text\text_16xMD.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Icons\Text\text_16xSM.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

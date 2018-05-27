@@ -14,6 +14,7 @@ using System.Threading;
 using System.Windows.Threading;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Drawing.Drawing2D;
+using System.Diagnostics;
 
 namespace BookKeeper
 {
@@ -51,7 +52,7 @@ namespace BookKeeper
 
         #region Properties
 
-        private readonly string[] AppDirectories = { "Data", "Cache" };
+        private readonly string[] AppDirectories = { "Data", "Cache", "Reports" };
         private Random random = new Random();
         private int ThumbnailWidth { get; set; } = 250;
         private int ThumbnailHeight { get; set; } = 150;
@@ -260,6 +261,11 @@ namespace BookKeeper
                 await RefreshLoansListViewAsync();
                 await RefreshPopularityChartAsync();
             };
+            detailsDialog.BookReturned += async (se, ev) =>
+            {
+                await RefreshLoansListViewAsync();
+                await RefreshPopularityChartAsync();
+            };
             tabPage.Controls.Add(detailsDialog);
             detailsDialog.Anchor = tabPage.Anchor = (AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left);
             MainTabControl.Controls.Add(tabPage);
@@ -349,7 +355,7 @@ namespace BookKeeper
 
         private void NewLoan_MenuItem_Click(object sender, EventArgs e)
         {
-
+         
         }
 
         private void Print_MenuItem_Click(object sender, EventArgs e)
@@ -360,6 +366,49 @@ namespace BookKeeper
         private void Settings_MenuItem_Click(object sender, EventArgs e)
         {
 
+        }
+
+
+        private void totxtToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            StreamWriter streamWriter = new StreamWriter("Reports/loans.txt");
+            foreach (BookLoan loan in BookLoans)
+            {
+                streamWriter.Write(string.Format("Book ID: {0}\r\nLent to {1}\r\nFrom {2}\r\nTo {3}\r\n\r\n", loan.BookID, loan.LoanerName, loan.LoanDate.ToShortDateString(), loan.ReturnDate.ToShortDateString()));
+            }
+            streamWriter.Close();
+            if (MessageBox.Show("Loans successfully exported to Reports/loans.txt\nDo you want to open the report now?", "Success", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+            {
+                try
+                {
+                    Process.Start(Application.StartupPath + "\\Reports\\loans.txt");
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Can't find " + Application.StartupPath + "\\Reports\\loans.txt");
+                }
+            }
+        }
+
+        private void toTxtToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            StreamWriter streamWriter = new StreamWriter("Reports/books.txt");
+            foreach (Book book in Books)
+            {
+                streamWriter.Write(string.Format("{0} - {1}\r\nAvailable: {2}\r\n\r\n", book.Author, book.Title, book.QuantityAvailable));
+            }
+            streamWriter.Close();
+            if (MessageBox.Show("Books successfully exported to Reports/books.txt\nDo you want to open the report now?", "Success", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+            {
+                try
+                {
+                    Process.Start(Application.StartupPath + "\\Reports\\books.txt");
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Can't find " + Application.StartupPath + "\\Reports\\books.txt");
+                }
+            }
         }
 
         private void MainWindow_FormClosing(object sender, FormClosingEventArgs e)
@@ -489,17 +538,6 @@ namespace BookKeeper
             await RefreshMainPanelAsync();
         }
 
-        async private void Sort_RadioButton_CheckedChanged(object sender, EventArgs e)
-        {
-            if (RefreshActive)
-            {
-                CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-                RefreshCancellationToken = cancellationTokenSource.Token;
-                cancellationTokenSource.Cancel();
-            }
-            await RefreshMainPanelAsync();
-        }
-
         private void ClearSearch_Button_Click(object sender, EventArgs e)
         {
             Search_TextBox.Text = string.Empty;
@@ -518,16 +556,20 @@ namespace BookKeeper
             MainTabControl.Controls.Add(newBookPage);
             MainTabControl.SelectedIndex = MainTabControl.Controls.Count - 1;
         }
-
-        /// <summary>
-        /// Creates a new book loan TabPage, adds it to the main tabcontrol and creates a context menu for it that allows closing and printing.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        
         private void NewBookLoan_MenuItem_Click(object sender, EventArgs e)
         {
-            MainTabControl.SelectedIndex = 1;
-            //TODO
+            NewBookLoan_MenuItem.Enabled = false;
+            LendBookDialog_Full lendBookDialog_Full = new LendBookDialog_Full(Books);
+            lendBookDialog_Full.Save += async(a, b) =>
+            {
+                await Database.AddBookLoanAsync(b);
+                await RefreshLoansListViewAsync();
+                await RefreshMainPanelAsync(MainPanelRefreshMode.FromDatabase);
+                await RefreshPopularityChartAsync();
+                NewBookLoan_MenuItem.Enabled = true;
+            };
+            lendBookDialog_Full.Show();
         }
 
         private void SerializeBooks()
@@ -582,7 +624,9 @@ namespace BookKeeper
                 if (selectedBookLoans.Count == 1)
                 {
                     await Database.RemoveBookLoanAsync(selectedBookLoans[0]);
-                   
+                    await RefreshLoansListViewAsync();
+                    await RefreshMainPanelAsync(MainPanelRefreshMode.FromDatabase);
+                    await RefreshPopularityChartAsync();
                 }
             }
             catch (Exception)
@@ -627,7 +671,7 @@ namespace BookKeeper
                 await Database.AddBookLoanAsync(e);
                 await RefreshMainPanelAsync(MainPanelRefreshMode.FromDatabase);
                 await RefreshLoansListViewAsync();
-                   await RefreshPopularityChartAsync();
+                await RefreshPopularityChartAsync();
             }
             finally
             {
@@ -667,6 +711,5 @@ namespace BookKeeper
         }
 
         #endregion
-
     }
 }

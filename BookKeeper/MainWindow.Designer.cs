@@ -36,10 +36,12 @@ namespace BookKeeper
             this.NewLoan_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.NewBookLoan_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.NewBook_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.Print_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loansToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.totxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.booksToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toTxtToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-            this.Settings_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.Exit_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.About_MenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -59,13 +61,13 @@ namespace BookKeeper
             this.label4 = new System.Windows.Forms.Label();
             this.LendBook_Button = new System.Windows.Forms.Button();
             this.ReturnBook_Button = new System.Windows.Forms.Button();
-            this.BookPreview_BookThumbnail = new BookKeeper.BookThumbnail();
             this.Loans_ListView = new System.Windows.Forms.ListView();
             this.BookID_ColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.LoanerName_ColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.LoanDate_ColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ReturnDate_ColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.StatusLabel = new System.Windows.Forms.Label();
+            this.BookPreview_BookThumbnail = new BookKeeper.BookThumbnail();
             this.MainMenuStrip.SuspendLayout();
             this.MainTabControl.SuspendLayout();
             this.Dashboard_TabPage.SuspendLayout();
@@ -88,10 +90,8 @@ namespace BookKeeper
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.NewLoan_MenuItem,
-            this.Print_MenuItem,
+            this.exportToolStripMenuItem,
             this.toolStripMenuItem1,
-            this.Settings_MenuItem,
-            this.toolStripMenuItem2,
             this.Exit_MenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
@@ -104,7 +104,7 @@ namespace BookKeeper
             this.NewBook_MenuItem});
             this.NewLoan_MenuItem.Image = ((System.Drawing.Image)(resources.GetObject("NewLoan_MenuItem.Image")));
             this.NewLoan_MenuItem.Name = "NewLoan_MenuItem";
-            this.NewLoan_MenuItem.Size = new System.Drawing.Size(156, 22);
+            this.NewLoan_MenuItem.Size = new System.Drawing.Size(133, 22);
             this.NewLoan_MenuItem.Text = "New";
             this.NewLoan_MenuItem.Click += new System.EventHandler(this.NewLoan_MenuItem_Click);
             // 
@@ -126,40 +126,61 @@ namespace BookKeeper
             this.NewBook_MenuItem.Text = "Book...";
             this.NewBook_MenuItem.Click += new System.EventHandler(this.NewBook_MenuItem_Click);
             // 
-            // Print_MenuItem
+            // exportToolStripMenuItem
             // 
-            this.Print_MenuItem.Image = ((System.Drawing.Image)(resources.GetObject("Print_MenuItem.Image")));
-            this.Print_MenuItem.Name = "Print_MenuItem";
-            this.Print_MenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
-            this.Print_MenuItem.Size = new System.Drawing.Size(156, 22);
-            this.Print_MenuItem.Text = "Print";
-            this.Print_MenuItem.Click += new System.EventHandler(this.Print_MenuItem_Click);
+            this.exportToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.loansToolStripMenuItem,
+            this.booksToolStripMenuItem});
+            this.exportToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("exportToolStripMenuItem.Image")));
+            this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
+            this.exportToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.exportToolStripMenuItem.Text = "Export";
+            // 
+            // loansToolStripMenuItem
+            // 
+            this.loansToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.totxtToolStripMenuItem});
+            this.loansToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("loansToolStripMenuItem.Image")));
+            this.loansToolStripMenuItem.Name = "loansToolStripMenuItem";
+            this.loansToolStripMenuItem.Size = new System.Drawing.Size(106, 22);
+            this.loansToolStripMenuItem.Text = "Loans";
+            // 
+            // totxtToolStripMenuItem
+            // 
+            this.totxtToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("totxtToolStripMenuItem.Image")));
+            this.totxtToolStripMenuItem.Name = "totxtToolStripMenuItem";
+            this.totxtToolStripMenuItem.Size = new System.Drawing.Size(106, 22);
+            this.totxtToolStripMenuItem.Text = "To .txt";
+            this.totxtToolStripMenuItem.Click += new System.EventHandler(this.totxtToolStripMenuItem_Click);
+            // 
+            // booksToolStripMenuItem
+            // 
+            this.booksToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toTxtToolStripMenuItem1});
+            this.booksToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("booksToolStripMenuItem.Image")));
+            this.booksToolStripMenuItem.Name = "booksToolStripMenuItem";
+            this.booksToolStripMenuItem.Size = new System.Drawing.Size(106, 22);
+            this.booksToolStripMenuItem.Text = "Books";
+            // 
+            // toTxtToolStripMenuItem1
+            // 
+            this.toTxtToolStripMenuItem1.Image = ((System.Drawing.Image)(resources.GetObject("toTxtToolStripMenuItem1.Image")));
+            this.toTxtToolStripMenuItem1.Name = "toTxtToolStripMenuItem1";
+            this.toTxtToolStripMenuItem1.Size = new System.Drawing.Size(106, 22);
+            this.toTxtToolStripMenuItem1.Text = "To .txt";
+            this.toTxtToolStripMenuItem1.Click += new System.EventHandler(this.toTxtToolStripMenuItem1_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(153, 6);
-            // 
-            // Settings_MenuItem
-            // 
-            this.Settings_MenuItem.Image = ((System.Drawing.Image)(resources.GetObject("Settings_MenuItem.Image")));
-            this.Settings_MenuItem.Name = "Settings_MenuItem";
-            this.Settings_MenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.Settings_MenuItem.Size = new System.Drawing.Size(156, 22);
-            this.Settings_MenuItem.Text = "Settings";
-            this.Settings_MenuItem.Click += new System.EventHandler(this.Settings_MenuItem_Click);
-            // 
-            // toolStripMenuItem2
-            // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(153, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(130, 6);
             // 
             // Exit_MenuItem
             // 
             this.Exit_MenuItem.Image = ((System.Drawing.Image)(resources.GetObject("Exit_MenuItem.Image")));
             this.Exit_MenuItem.Name = "Exit_MenuItem";
             this.Exit_MenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this.Exit_MenuItem.Size = new System.Drawing.Size(156, 22);
+            this.Exit_MenuItem.Size = new System.Drawing.Size(133, 22);
             this.Exit_MenuItem.Text = "Exit";
             this.Exit_MenuItem.Click += new System.EventHandler(this.Exit_MenuItem_Click);
             // 
@@ -204,7 +225,7 @@ namespace BookKeeper
             this.Dashboard_TabPage.Location = new System.Drawing.Point(4, 22);
             this.Dashboard_TabPage.Name = "Dashboard_TabPage";
             this.Dashboard_TabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.Dashboard_TabPage.Size = new System.Drawing.Size(846, 396);
+            this.Dashboard_TabPage.Size = new System.Drawing.Size(846, 596);
             this.Dashboard_TabPage.TabIndex = 0;
             this.Dashboard_TabPage.Text = "Dashboard";
             this.Dashboard_TabPage.UseVisualStyleBackColor = true;
@@ -244,7 +265,7 @@ namespace BookKeeper
             this.MainPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.MainPanel.Location = new System.Drawing.Point(3, 68);
             this.MainPanel.Name = "MainPanel";
-            this.MainPanel.Size = new System.Drawing.Size(840, 322);
+            this.MainPanel.Size = new System.Drawing.Size(840, 525);
             this.MainPanel.TabIndex = 3;
             // 
             // label2
@@ -366,22 +387,6 @@ namespace BookKeeper
             this.ReturnBook_Button.UseVisualStyleBackColor = false;
             this.ReturnBook_Button.Click += new System.EventHandler(this.ReturnBook_Button_Click);
             // 
-            // BookPreview_BookThumbnail
-            // 
-            this.BookPreview_BookThumbnail.Author = "";
-            this.BookPreview_BookThumbnail.BackColor = System.Drawing.Color.White;
-            this.BookPreview_BookThumbnail.Category = null;
-            this.BookPreview_BookThumbnail.Description = "";
-            this.BookPreview_BookThumbnail.ID = ((uint)(0u));
-            this.BookPreview_BookThumbnail.Location = new System.Drawing.Point(512, 13);
-            this.BookPreview_BookThumbnail.Name = "BookPreview_BookThumbnail";
-            this.BookPreview_BookThumbnail.QuantityAvailable = ((uint)(0u));
-            this.BookPreview_BookThumbnail.Size = new System.Drawing.Size(326, 150);
-            this.BookPreview_BookThumbnail.TabIndex = 1;
-            this.BookPreview_BookThumbnail.Thumbnail = ((System.Drawing.Bitmap)(resources.GetObject("BookPreview_BookThumbnail.Thumbnail")));
-            this.BookPreview_BookThumbnail.Title = "";
-            this.BookPreview_BookThumbnail.DetailsButtonClicked += new System.EventHandler<BookKeeper.Book>(this.Thumbnail_DetailsButtonClicked);
-            // 
             // Loans_ListView
             // 
             this.Loans_ListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
@@ -430,6 +435,22 @@ namespace BookKeeper
             this.StatusLabel.TabIndex = 0;
             this.StatusLabel.Text = "Ready";
             // 
+            // BookPreview_BookThumbnail
+            // 
+            this.BookPreview_BookThumbnail.Author = "";
+            this.BookPreview_BookThumbnail.BackColor = System.Drawing.Color.White;
+            this.BookPreview_BookThumbnail.Category = null;
+            this.BookPreview_BookThumbnail.Description = "";
+            this.BookPreview_BookThumbnail.ID = ((uint)(0u));
+            this.BookPreview_BookThumbnail.Location = new System.Drawing.Point(512, 13);
+            this.BookPreview_BookThumbnail.Name = "BookPreview_BookThumbnail";
+            this.BookPreview_BookThumbnail.QuantityAvailable = ((uint)(0u));
+            this.BookPreview_BookThumbnail.Size = new System.Drawing.Size(326, 150);
+            this.BookPreview_BookThumbnail.TabIndex = 1;
+            this.BookPreview_BookThumbnail.Thumbnail = ((System.Drawing.Bitmap)(resources.GetObject("BookPreview_BookThumbnail.Thumbnail")));
+            this.BookPreview_BookThumbnail.Title = "";
+            this.BookPreview_BookThumbnail.DetailsButtonClicked += new System.EventHandler<BookKeeper.Book>(this.Thumbnail_DetailsButtonClicked);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -465,7 +486,6 @@ namespace BookKeeper
 #pragma warning restore CS0108 // Member hides inherited member; missing new keyword
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem NewLoan_MenuItem;
-        private System.Windows.Forms.ToolStripMenuItem Settings_MenuItem;
         private System.Windows.Forms.ToolStripMenuItem Exit_MenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem About_MenuItem;
@@ -474,8 +494,6 @@ namespace BookKeeper
         private System.Windows.Forms.TabControl MainTabControl;
         private System.Windows.Forms.TabPage Dashboard_TabPage;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem Print_MenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
         private System.Windows.Forms.Label StatusLabel;
         private System.Windows.Forms.TextBox Search_TextBox;
         private System.Windows.Forms.Label label1;
@@ -497,6 +515,11 @@ namespace BookKeeper
         private Button ClearLoansSearchBox_Button;
         private PictureBox Popularity_PictureBox;
         private Label label3;
+        private ToolStripMenuItem exportToolStripMenuItem;
+        private ToolStripMenuItem loansToolStripMenuItem;
+        private ToolStripMenuItem totxtToolStripMenuItem;
+        private ToolStripMenuItem booksToolStripMenuItem;
+        private ToolStripMenuItem toTxtToolStripMenuItem1;
     }
 }
 
