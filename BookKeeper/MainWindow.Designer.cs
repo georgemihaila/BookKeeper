@@ -52,6 +52,8 @@ namespace BookKeeper
             this.Search_TextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.Loans_TabPage = new System.Windows.Forms.TabPage();
+            this.Popularity_PictureBox = new System.Windows.Forms.PictureBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.ClearLoansSearchBox_Button = new System.Windows.Forms.Button();
             this.LoansSearch_TextBox = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -68,6 +70,7 @@ namespace BookKeeper
             this.MainTabControl.SuspendLayout();
             this.Dashboard_TabPage.SuspendLayout();
             this.Loans_TabPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Popularity_PictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // MainMenuStrip
@@ -186,7 +189,7 @@ namespace BookKeeper
             this.MainTabControl.Location = new System.Drawing.Point(0, 27);
             this.MainTabControl.Name = "MainTabControl";
             this.MainTabControl.SelectedIndex = 0;
-            this.MainTabControl.Size = new System.Drawing.Size(854, 422);
+            this.MainTabControl.Size = new System.Drawing.Size(854, 622);
             this.MainTabControl.TabIndex = 1;
             this.MainTabControl.SelectedIndexChanged += new System.EventHandler(this.MainTabControl_SelectedIndexChanged);
             // 
@@ -272,6 +275,8 @@ namespace BookKeeper
             // 
             // Loans_TabPage
             // 
+            this.Loans_TabPage.Controls.Add(this.Popularity_PictureBox);
+            this.Loans_TabPage.Controls.Add(this.label3);
             this.Loans_TabPage.Controls.Add(this.ClearLoansSearchBox_Button);
             this.Loans_TabPage.Controls.Add(this.LoansSearch_TextBox);
             this.Loans_TabPage.Controls.Add(this.label4);
@@ -281,10 +286,27 @@ namespace BookKeeper
             this.Loans_TabPage.Controls.Add(this.Loans_ListView);
             this.Loans_TabPage.Location = new System.Drawing.Point(4, 22);
             this.Loans_TabPage.Name = "Loans_TabPage";
-            this.Loans_TabPage.Size = new System.Drawing.Size(846, 396);
+            this.Loans_TabPage.Size = new System.Drawing.Size(846, 596);
             this.Loans_TabPage.TabIndex = 1;
             this.Loans_TabPage.Text = "Loans";
             this.Loans_TabPage.UseVisualStyleBackColor = true;
+            // 
+            // Popularity_PictureBox
+            // 
+            this.Popularity_PictureBox.Location = new System.Drawing.Point(11, 275);
+            this.Popularity_PictureBox.Name = "Popularity_PictureBox";
+            this.Popularity_PictureBox.Size = new System.Drawing.Size(498, 318);
+            this.Popularity_PictureBox.TabIndex = 14;
+            this.Popularity_PictureBox.TabStop = false;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(8, 259);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(103, 13);
+            this.label3.TabIndex = 13;
+            this.label3.Text = "Most popular books:";
             // 
             // ClearLoansSearchBox_Button
             // 
@@ -402,7 +424,7 @@ namespace BookKeeper
             // 
             this.StatusLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.StatusLabel.AutoSize = true;
-            this.StatusLabel.Location = new System.Drawing.Point(12, 448);
+            this.StatusLabel.Location = new System.Drawing.Point(12, 648);
             this.StatusLabel.Name = "StatusLabel";
             this.StatusLabel.Size = new System.Drawing.Size(38, 13);
             this.StatusLabel.TabIndex = 0;
@@ -413,7 +435,7 @@ namespace BookKeeper
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(854, 461);
+            this.ClientSize = new System.Drawing.Size(854, 661);
             this.Controls.Add(this.StatusLabel);
             this.Controls.Add(this.MainTabControl);
             this.Controls.Add(this.MainMenuStrip);
@@ -430,6 +452,7 @@ namespace BookKeeper
             this.Dashboard_TabPage.PerformLayout();
             this.Loans_TabPage.ResumeLayout(false);
             this.Loans_TabPage.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Popularity_PictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -472,6 +495,8 @@ namespace BookKeeper
         private TextBox LoansSearch_TextBox;
         private Label label4;
         private Button ClearLoansSearchBox_Button;
+        private PictureBox Popularity_PictureBox;
+        private Label label3;
     }
 }
 

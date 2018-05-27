@@ -13,6 +13,7 @@ using System.Reflection;
 using System.Threading;
 using System.Windows.Threading;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Drawing.Drawing2D;
 
 namespace BookKeeper
 {
@@ -89,6 +90,72 @@ namespace BookKeeper
         {
             await RefreshMainPanelAsync((File.Exists("Data/books.bin")) ? MainPanelRefreshMode.Deserialization : MainPanelRefreshMode.FromDatabase);
             await RefreshLoansListViewAsync();
+            await RefreshPopularityChartAsync();
+        }
+
+        private Task RefreshPopularityChartAsync()
+        {
+            Bitmap bitmap = new Bitmap(Popularity_PictureBox.Width, Popularity_PictureBox.Height);
+            //Use a tuple for analysing the popularity of each book.
+            Tuple<Book, int>[] popularities = new Tuple<Book, int>[Books.Count];
+            for (int i = 0; i < popularities.Count(); i++)
+            {
+                popularities[i] = new Tuple<Book, int>(Books[i], BookLoans.Where(o=>o.BookID == Books[i].ID).ToList().Count);
+            }
+            popularities = popularities.Where(o => o.Item2 > 0).ToArray();
+            popularities = popularities.OrderByDescending(o => o.Item2).ToArray();
+            for (int y = 0; y < bitmap.Height; y++)
+            {
+                for (int x = 0; x < bitmap.Width; x++)
+                {
+                    bitmap.SetPixel(x, y, Color.LightCyan);
+                }
+            }
+            int maxPopularity = popularities[0].Item2;
+            int spacing = 1;
+            int barThickness = bitmap.Width / (popularities.Length * spacing);
+            Color barColor = Color.Green;
+            Graphics graphics = Graphics.FromImage(bitmap);
+            for (int i = 0; i < popularities.Length; i++)
+            {
+                if (popularities[i].Item2 == 0) continue; //Avoid DivideByZero exceptions
+                for (int y = bitmap.Height - 1; y >= bitmap.Height - bitmap.Height * ((double)popularities[i].Item2 / (double)maxPopularity); y--)
+                {
+                    for (int x = i * (spacing + barThickness); x < i * (spacing + barThickness) + barThickness; x++)
+                    {
+                        if (x >= bitmap.Width) break;
+                        bitmap.SetPixel(x, y, barColor);
+                    }
+                }
+                //graphics.DrawString(popularities[i].Item1.ID.ToString(), new Font("Tahoma", 5), Brushes.Black, new PointF(i * (spacing + barThickness), bitmap.Height - bitmap.Height * ((float)popularities[i].Item2 / (float)maxPopularity)));
+                //At the top of the bar
+                //DrawRotatedTextAt(graphics, 270, popularities[i].Item1.Title, i * (spacing + barThickness), (int)(bitmap.Height - bitmap.Height * ((float)popularities[i].Item2 / (float)maxPopularity)), new Font("Tahoma", 8), Brushes.Black);
+                string text = ((popularities[i].Item1.Title.Length >= 17) ? popularities[i].Item1.Title.Substring(0, 17) + "..." : popularities[i].Item1.Title) + " (" + popularities[i].Item2+ " loans)";
+                DrawRotatedTextAt(graphics, 270, text, i * (spacing + barThickness), bitmap.Height - 1, new Font("Tahoma", 8), Brushes.Black);
+            }
+            Popularity_PictureBox.Image = bitmap;
+            return Task.CompletedTask;
+        }
+
+        private void DrawRotatedTextAt(Graphics gr, float angle,
+    string txt, int x, int y, Font the_font, Brush the_brush)
+        {
+            // Save the graphics state.
+            GraphicsState state = gr.Save();
+            gr.ResetTransform();
+
+            // Rotate.
+            gr.RotateTransform(angle);
+
+            // Translate to desired position. Be sure to append
+            // the rotation so it occurs after the rotation.
+            gr.TranslateTransform(x, y, MatrixOrder.Append);
+
+            // Draw the text at the origin.
+            gr.DrawString(txt, the_font, the_brush, 0, 0);
+
+            // Restore the graphics state.
+            gr.Restore(state);
         }
 
         private async Task RefreshLoansListViewAsync()
@@ -188,6 +255,11 @@ namespace BookKeeper
             TabPage tabPage = new TabPage();
             tabPage.Text = title;
             BookDetailsDialog detailsDialog = new BookDetailsDialog(e, BookLoans.Where(o => o.BookID == e.ID).ToList());
+            detailsDialog.BookLent += async(se, ev) =>
+            {
+                await RefreshLoansListViewAsync();
+                await RefreshPopularityChartAsync();
+            };
             tabPage.Controls.Add(detailsDialog);
             detailsDialog.Anchor = tabPage.Anchor = (AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left);
             MainTabControl.Controls.Add(tabPage);
@@ -506,7 +578,16 @@ namespace BookKeeper
             try
             {
                 ReturnBook_Button.Enabled = false;
-                // await Database.R
+                List<BookLoan> selectedBookLoans = BookLoans.Where(o => o.GetHashCode() == BookLoans[Loans_ListView.SelectedIndices[0]].GetHashCode()).ToList();
+                if (selectedBookLoans.Count == 1)
+                {
+                    await Database.RemoveBookLoanAsync(selectedBookLoans[0]);
+                   
+                }
+            }
+            catch (Exception)
+            {
+               MessageBox.Show("Select an item from the list first", "Error");
             }
             finally
             {
@@ -516,18 +597,25 @@ namespace BookKeeper
 
         private void LendBook_Button_Click(object sender, EventArgs e)
         {
-            List<Book> selectedBooks = Books.Where(o => o.ID == BookLoans[Loans_ListView.SelectedIndices[0]].BookID).ToList();
-            if (selectedBooks.Count == 1)
+            try
             {
-                var selectedBook = selectedBooks[0];
-                LendBookDialog lendBookDialog = new LendBookDialog(selectedBook.ID);
-                lendBookDialog.Text = "Lend \"" + selectedBook.Title + "\"";
-                lendBookDialog.FormClosing += LendBookDialog_FormClosing;
-                lendBookDialog.Save += LendBookDialog_Save;
-                lendBookDialog.StartPosition = FormStartPosition.CenterScreen;
-                lendBookDialog.TopMost = true;
-                lendBookDialog.Show();
-                LendBook_Button.Enabled = false;
+                List<Book> selectedBooks = Books.Where(o => o.ID == BookLoans[Loans_ListView.SelectedIndices[0]].BookID).ToList();
+                if (selectedBooks.Count == 1)
+                {
+                    var selectedBook = selectedBooks[0];
+                    LendBookDialog lendBookDialog = new LendBookDialog(selectedBook.ID);
+                    lendBookDialog.Text = "Lend \"" + selectedBook.Title + "\"";
+                    lendBookDialog.FormClosing += LendBookDialog_FormClosing;
+                    lendBookDialog.Save += LendBookDialog_Save;
+                    lendBookDialog.StartPosition = FormStartPosition.CenterScreen;
+                    lendBookDialog.TopMost = true;
+                    lendBookDialog.Show();
+                    LendBook_Button.Enabled = false;
+                }
+            }
+            catch (Exception)
+            {
+               MessageBox.Show("Select an item from the list first", "Error");
             }
         }
 
@@ -539,6 +627,7 @@ namespace BookKeeper
                 await Database.AddBookLoanAsync(e);
                 await RefreshMainPanelAsync(MainPanelRefreshMode.FromDatabase);
                 await RefreshLoansListViewAsync();
+                   await RefreshPopularityChartAsync();
             }
             finally
             {

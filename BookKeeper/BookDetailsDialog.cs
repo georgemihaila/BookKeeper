@@ -35,6 +35,9 @@ namespace BookKeeper
             QuantityAvailable_Label.Text = "Quanity available: " + (QuantityAvailable = book.QuantityAvailable);
         }
 
+        public event EventHandler<BookLoan> BookLent;
+        protected virtual void OnBookLent(BookLoan e) => BookLent?.Invoke(this, e);
+
         private Book _Book { get; set; }
 
         private List<BookLoan> _Loans = new List<BookLoan>();
@@ -68,6 +71,7 @@ namespace BookKeeper
             set
             {
                 LendBook_Button.Enabled = (value > 0);
+                QuantityAvailable_Label.Text = "Quantity available:" + value;
                 _QuantityAvailable = value;
             }
         }
@@ -94,6 +98,7 @@ namespace BookKeeper
                 item.SubItems.Add(e.ReturnDate.ToShortDateString());
                 LentTo_ListView.Items.Add(item);
                 this.QuantityAvailable--;
+                BookLent?.Invoke(this, e);
             }
             finally
             {
